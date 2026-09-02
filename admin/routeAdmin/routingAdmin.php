@@ -1,26 +1,22 @@
 <?php
-    $host = explode('?', $_SERVER['REQUEST_URI'])[0];
-    $num  = substr_count($host, '/');
-    $path = explode('/', $host)[$num];
+$host = explode('?', $_SERVER['REQUEST_URI'])[0];
+$num = substr_count($host, '/');
+$path = explode('/', $host)[$num];
 
-    if ($path == '' OR $path == 'index.php')
-    {
-        // Главная страница -
-        $response = controllerAdmin::formLoginSite();
-    }
-    // ------ ВХОД -----------------------------------
-    elseif ($path == 'login')
-    {
-        // Форма входа
-        $response = controllerAdmin::loginAction();
-    }
-    elseif ($path == 'logout')
-    {
-        // Выход
-        $response = controllerAdmin::logoutAction();
-    }
-    else
-    {
-        // Страница не существует
-        $response = controllerAdmin::error404();
-    }
+if ($path == '' OR $path == 'index.php') {
+    $response = controllerAdmin::formLoginSite();
+}
+elseif ($path == 'login') {
+    $response = controllerAdmin::loginAction();
+}
+elseif ($path == 'logout') {
+    $response = controllerAdmin::logoutAction();
+}
+elseif ($path == 'newsAdmin') {
+    // Вызов списка новостей в админке
+    $response = controllerAdminNews::NewsList();
+}
+else {
+    $response = controllerAdmin::error404();
+}
+?>
