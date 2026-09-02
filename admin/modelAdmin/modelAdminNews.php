@@ -6,5 +6,26 @@ class modelAdminNews {
         $arr = $db->getAll($query);
         return $arr;
     }
+
+    public static function getNewsAdd() {
+        $test = false;
+        if (isset($_POST['save'])) {
+            if (isset($_POST['title']) && isset($_POST['text']) && isset($_POST['idCategory'])) {
+                $title = $_POST['title'];
+                $text = $_POST['text'];
+                $idCategory = $_POST['idCategory'];
+                $image = addslashes(file_get_contents($_FILES['picture']['tmp_name']));
+                $userId = $_SESSION['userId']; // Берем ID авторизованного пользователя из сессии
+
+                $sql = "INSERT INTO news (id, title, text, picture, category_id, user_id) VALUES (NULL, '$title', '$text', '$image', '$idCategory', '$userId')";
+                $db = new Database();
+                $item = $db->executeRun($sql);
+                if ($item == true) {
+                    $test = true;
+                }
+            }
+        }
+        return $test;
+    }
 }
 ?>
