@@ -1,7 +1,5 @@
 <?php
-
 class Database {
-
     private $conn;
     private $host;
     private $user;
@@ -29,12 +27,10 @@ class Database {
                     $this->password,
                     array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8')
                 );
-            }
-            catch (Exception $e) {
-                die('Connection failed : ' . $e->getMessage());
+            } catch (Exception $e) {
+                die('Connection failed: ' . $e->getMessage());
             }
         }
-
         return $this->conn;
     }
 
@@ -49,7 +45,6 @@ class Database {
         $stmt->execute();
         $stmt->setFetchMode(PDO::FETCH_ASSOC);
         $response = $stmt->fetch();
-
         return $response;
     }
 
@@ -58,13 +53,11 @@ class Database {
         $stmt->execute();
         $stmt->setFetchMode(PDO::FETCH_ASSOC);
         $response = $stmt->fetchAll();
-
         return $response;
     }
 
     function executeRun($query) {
         $response = $this->conn->exec($query);
-
         return $response;
     }
 }

@@ -29,20 +29,9 @@ class Controller {
         include_once 'view/error404.php';
     }
 
-    // Регистрация пользователя
-    public static function registerForm() {
-        include_once('view/formRegister.php');
-    }
-
-    public static function registerUser() {
-        $result = Register::registerUser();
-        include_once('view/answerRegister.php');
-    }
-
-    // Комментарии
     public static function InsertComment($c, $id) {
         Comments::insertComment($c, $id);
-        header('Location:news?id='.$id.'#gtable');
+        header('Location:news?id='.$id.'#ctable');
     }
 
     public static function Comments($newsid) {
@@ -58,6 +47,15 @@ class Controller {
     public static function CommentsCountWithAncor($newsid) {
         $arr = Comments::getCommentsCountByNewsID($newsid);
         ViewComments::CommentsCountWithAncor($arr);
+    }
+
+    public static function registerForm() {
+        include_once('view/formRegister.php');
+    }
+
+    public static function registerUser() {
+        $result = Register::registerUser();
+        include_once('view/answerRegister.php');
     }
 }
 ?>

@@ -1,43 +1,41 @@
 <?php ob_start(); ?>
 <div class="container" style="min-height:400px;">
     <div class="col-md-11">
-        <h2>News delete</h2>
+        <h2>News Add</h2>
         <?php
         if (isset($test)) {
             if ($test == true) {
         ?>
                 <div class="alert alert-info">
-                    <strong>Запись удалена. </strong><a href="newsAdmin"> Список новостей</a>
+                    <strong>Запись добавлена. </strong><a href="newsAdmin"> Список новостей</a>
                 </div>
         <?php
             } else if ($test == false) {
         ?>
                 <div class="alert alert-warning">
-                    <strong>Ошибка удаления записи!</strong> <a href="newsAdmin"> Список новостей</a>
+                    <strong>Ошибка добавления записи!</strong> <a href="newsAdmin"> Список новостей</a>
                 </div>
         <?php
             }
         } else {
         ?>
-            <form method="POST" action="newsDelResult?id=<?php echo $id; ?>" enctype="multipart/form-data">
+            <form method="POST" action="newsAddResult" enctype="multipart/form-data">
                 <table class='table table-bordered'>
                     <tr>
                         <td>News title</td>
-                        <td><input type='text' name='title' class='form-control' required value="<?php echo $detail['title']; ?>" readonly></td>
+                        <td><input type='text' name='title' class='form-control' required></td>
                     </tr>
                     <tr>
                         <td>News text</td>
-                        <td><textarea rows="5" name="text" class='form-control' required readonly><?php echo $detail['text']; ?></textarea></td>
+                        <td><textarea rows="5" name="text" class='form-control' required></textarea></td>
                     </tr>
                     <tr>
                         <td>Category</td>
                         <td>
-                            <select name="idCategory" class="form-control" disabled>
+                            <select name="idCategory" class="form-control">
                                 <?php
                                 foreach ($arr as $row) {
-                                    echo '<option value="'.$row['id'].'"';
-                                    if ($row['id'] == $detail['category_id']) echo ' selected';
-                                    echo '>'.$row['name'].'</option>';
+                                    echo '<option value="'.$row['id'].'">'.$row['name'].'</option>';
                                 }
                                 ?>
                             </select>
@@ -45,10 +43,10 @@
                     </tr>
                     <!-- image-->
                     <tr>
-                        <td>OldPicture</td>
+                        <td>Picture</td>
                         <td>
                             <div>
-                                <?php echo '<img src="data:image/jpeg;base64,'.base64_encode($detail['picture']).'" width=150 />'; ?>
+                                <input type="file" name="picture" style="color:black;">
                             </div>
                         </td>
                     </tr>
@@ -56,7 +54,7 @@
                     <tr>
                         <td colspan="2">
                             <button type="submit" class="btn btn-primary" name="save">
-                                <span class="glyphicon glyphicon-plus"></span> Удалить
+                                <span class="glyphicon glyphicon-plus"></span> Сохранить
                             </button>
                             <a href="newsAdmin" class="btn btn-large btn-success">
                                 <i class="glyphicon glyphicon-backward"></i> &nbsp;Назад к списку

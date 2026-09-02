@@ -20,7 +20,7 @@ class Register {
             if (mb_strlen($errorString) == 0) {
                 $passwordHash = password_hash($_POST['password'], PASSWORD_DEFAULT);
                 $date = date("Y-m-d");
-                $sql = "INSERT INTO users (id, username, email, password, status, registration_date, pass) VALUES (NULL, '$name', '$email', '$passwordHash', 'user', '$date', '$password')";
+                $sql = "INSERT INTO users (`id`, `username`, `email`, `password`, `status`, `registration_date`, `pass`) VALUES (NULL, '$name', '$email', '$passwordHash', 'user', '$date', '$password')";
                 $db = new Database();
                 $item = $db->executeRun($sql);
                 if ($item) {

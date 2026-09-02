@@ -1,10 +1,12 @@
 <?php
 class controllerAdminNews {
+    // list News
     public static function NewsList() {
         $arr = modelAdminNews::getNewsList();
         include_once 'viewAdmin/newsList.php';
     }
 
+    //------------------ add
     public static function newsAddForm() {
         $arr = modelAdminCategory::getCategoryList();
         include_once('viewAdmin/newsAddForm.php');
@@ -15,6 +17,7 @@ class controllerAdminNews {
         include_once('viewAdmin/newsAddForm.php');
     }
 
+    //------------------ edit
     public static function newsEditForm($id) {
         $arr = modelAdminCategory::getCategoryList();
         $detail = modelAdminNews::getNewsDetail($id);
@@ -26,6 +29,7 @@ class controllerAdminNews {
         include_once('viewAdmin/newsEditForm.php');
     }
 
+    //------------------ delete
     public static function newsDeleteForm($id) {
         $arr = modelAdminCategory::getCategoryList();
         $detail = modelAdminNews::getNewsDetail($id);

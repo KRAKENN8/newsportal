@@ -1,11 +1,11 @@
-<?php ob_start() ?>
+<?php ob_start(); ?>
 <h2>News List</h2>
 <div class="container" style="min-height:400px;">
     <div style="margin:20px;">
         <a class="btn btn-primary" href="newsAdd" role="button">Добавить новость</a>
     </div>
     <div class="col-md-11">
-        <table class="table table-bordered table-responsive">
+        <table class='table table-bordered table-responsive'>
             <tr>
                 <th width="10%">ID</th>
                 <th width="70%">Header News</th>
