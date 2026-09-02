@@ -1,16 +1,18 @@
 <?php
-
-ob_start();
+    ob_start();
 ?>
 
 <br>
 
 <?php
+    ViewNews::ReadNews($n);
 
-ViewNews::ReadNews($n);
+    echo "<br>";
+    Controller::Comments($_GET['id']);
 
-$content = ob_get_clean();
+    echo "<br>";
+    ViewComments::CommentsForm();
 
-include_once 'view/layout.php';
-
+    $content = ob_get_clean();
+    include_once 'view/layout.php';
 ?>
