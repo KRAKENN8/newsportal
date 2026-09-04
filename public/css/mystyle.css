@@ -1,38 +1,39 @@
-#content {
-    margin:0 auto;
-    width:900px;
-	/*min-height:500px;
-	height: 100%;*/
-	}
-img {
-	float: left;
-	width: 100px;
-				height:100px;
-				padding-right: 10px;
-			}
-            article{
-                /*background: #e1ffe1;*/
-                border: 1px solid #4caf50;
-                border-radius: 5px;
-                padding: 10px 20px;
-                margin: 20px;
-                color: #313331;
-				
-				min-height:230px;
-				width:700px;
-			
-            }
-            article h3{
-                color: #4e4e4e;
-            }
-            article h3 a{
-                color: #4e4e4e;
-            }			
-            article p{
-			font-size:16px;
-            }
+/* CyberPulse mystyle.css - Imports root style and provides component utilities */
+@import url('../../style.css');
 
-            ul{
-                list-style:none;
-            }
-           
+.divBox {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+.table-modern {
+  width: 100%;
+  border-collapse: collapse;
+  background: rgba(17, 24, 39, 0.6);
+  border: 1px solid var(--cp-border);
+  border-radius: var(--cp-radius-md);
+  overflow: hidden;
+}
+
+.table-modern th {
+  background: rgba(255, 255, 255, 0.04);
+  padding: 14px 18px;
+  text-align: left;
+  font-size: 13px;
+  color: var(--cp-text-muted);
+  border-bottom: 1px solid var(--cp-border);
+  font-family: var(--cp-font-mono);
+}
+
+.table-modern td {
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--cp-border);
+  color: var(--cp-text-main);
+  font-size: 14px;
+}
+
+.table-modern tr:last-child td {
+  border-bottom: none;
+}

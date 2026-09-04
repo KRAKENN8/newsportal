@@ -49,6 +49,15 @@ class Controller {
         ViewComments::CommentsCountWithAncor($arr);
     }
 
+    public static function SearchNews($keyword) {
+        $arr = News::searchNews($keyword);
+        include_once 'view/search.php';
+    }
+
+    public static function AboutSite() {
+        include_once 'view/about.php';
+    }
+
     public static function registerForm() {
         include_once('view/formRegister.php');
     }

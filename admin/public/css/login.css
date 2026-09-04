@@ -1,36 +1,80 @@
-﻿body {
-  padding-top: 40px;
-  padding-bottom: 40px;
-  background-color: #eee;
+/* CyberPulse Admin Login Stylesheet */
+@import url('../../../style.css');
+
+body {
+  padding-top: 60px;
+  padding-bottom: 60px;
+  background-color: var(--cp-bg-base);
+  color: var(--cp-text-main);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
 }
 
 .form-signin {
-  max-width: 330px;
-  padding: 15px;
+  max-width: 420px;
+  padding: 35px 30px;
   margin: 0 auto;
-}
-.form-signin .form-signin-heading {
-  margin-bottom: 10px;
-}
-.form-signin .form-control {
+  background: var(--cp-bg-surface);
+  border: 1px solid var(--cp-border);
+  border-radius: var(--cp-radius-lg);
+  box-shadow: var(--cp-shadow), 0 0 25px -5px var(--cp-cyan-glow);
   position: relative;
-  height: auto;
-  -webkit-box-sizing: border-box;
-     -moz-box-sizing: border-box;
-          box-sizing: border-box;
-  padding: 10px;
-  font-size: 16px;
+  overflow: hidden;
 }
+
+.form-signin::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--cp-cyan), var(--cp-purple));
+}
+
+.form-signin .form-signin-heading {
+  font-size: 22px;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.form-signin .form-control {
+  width: 100%;
+  padding: 11px 14px;
+  margin-bottom: 15px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--cp-border);
+  border-radius: var(--cp-radius-sm);
+  color: #ffffff;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
 .form-signin .form-control:focus {
-  z-index: 2;
+  outline: none;
+  border-color: var(--cp-cyan);
+  background: rgba(255, 255, 255, 0.07);
+  box-shadow: 0 0 12px var(--cp-cyan-glow);
 }
-.form-signin input[type="text"] {
-  margin-bottom: -1px;
-  border-bottom-right-radius: 0;
-  border-bottom-left-radius: 0;
+
+.form-signin button[type="submit"] {
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(135deg, var(--cp-cyan), #00a8ff);
+  color: #090d16;
+  font-weight: 700;
+  border: none;
+  border-radius: var(--cp-radius-sm);
+  cursor: pointer;
+  box-shadow: 0 4px 14px var(--cp-cyan-glow);
+  transition: all 0.2s ease;
 }
-.form-signin input[type="password"] {
-  margin-bottom: 10px;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
+
+.form-signin button[type="submit"]:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px var(--cp-cyan-glow);
 }

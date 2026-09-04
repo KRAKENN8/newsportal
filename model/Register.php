@@ -1,32 +1,52 @@
 <?php
 class Register {
-    public function registerUser() {
-        $controll = array(0 => false, 1 => 'error');
+    public static function registerUser() {
+        $controll = array(0 => false, 1 => 'Unknown error occurred.');
         if (isset($_POST['save'])) {
             $errorString = "";
-            $name = $_POST['name'];
+            $name = isset($_POST['name']) ? trim($_POST['name']) : '';
             $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
+            if (!$name) {
+                $errorString .= "Name cannot be empty.<br/>";
+            }
             if (!$email) {
-                $errorString .= "неправильный email<br/>";
+                $errorString .= "Invalid email address format.<br/>";
             }
-            $password = $_POST['password'];
-            $confirm = $_POST['confirm'];
+            $password = isset($_POST['password']) ? $_POST['password'] : '';
+            $confirm = isset($_POST['confirm']) ? $_POST['confirm'] : '';
             if (!$password || !$confirm || mb_strlen($password) < 6) {
-                $errorString .= "Пароль должен быть больше 6 символов<br/>";
+                $errorString .= "Password must be at least 6 characters long.<br/>";
             }
-            if ($password != $confirm) {
-                $errorString .= "Пароли не совпадают<br/>";
+            if ($password !== $confirm) {
+                $errorString .= "Passwords do not match.<br/>";
             }
-            if (mb_strlen($errorString) == 0) {
-                $passwordHash = password_hash($_POST['password'], PASSWORD_DEFAULT);
-                $date = date("Y-m-d");
-                $sql = "INSERT INTO users (`id`, `username`, `email`, `password`, `status`, `registration_date`, `pass`) VALUES (NULL, '$name', '$email', '$passwordHash', 'user', '$date', '$password')";
+
+            if (empty($errorString)) {
                 $db = new Database();
-                $item = $db->executeRun($sql);
+                $conn = $db->connect();
+
+                // Check duplicate email
+                $checkStmt = $conn->prepare("SELECT id FROM users WHERE email = :email");
+                $checkStmt->execute([':email' => $email]);
+                if ($checkStmt->fetch()) {
+                    return array(0 => false, 1 => "A user with this email address already exists.");
+                }
+
+                $passwordHash = password_hash($password, PASSWORD_DEFAULT);
+                $date = date("Y-m-d");
+                $stmt = $conn->prepare("INSERT INTO users (username, email, password, status, registration_date, pass) VALUES (:username, :email, :password, 'user', :reg_date, :pass)");
+                $item = $stmt->execute([
+                    ':username' => $name,
+                    ':email' => $email,
+                    ':password' => $passwordHash,
+                    ':reg_date' => $date,
+                    ':pass' => $password
+                ]);
+
                 if ($item) {
                     $controll = array(0 => true);
                 } else {
-                    $controll = array(0 => false, 1 => 'error');
+                    $controll = array(0 => false, 1 => 'Failed to save user in the database.');
                 }
             } else {
                 $controll = array(0 => false, 1 => $errorString);

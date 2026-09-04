@@ -2,7 +2,11 @@
 class controllerAdmin {
     // Форма авторизации админа
     public static function formLoginSite() {
-        include_once('viewAdmin/formLogin.php');
+        if (isset($_SESSION['sessionId']) && isset($_SESSION['status']) && $_SESSION['status'] === 'admin') {
+            include_once('viewAdmin/startAdmin.php');
+        } else {
+            include_once('viewAdmin/formLogin.php');
+        }
     }
 
     public static function loginAction() {
@@ -10,7 +14,7 @@ class controllerAdmin {
         if (isset($logIn) && $logIn == true) {
             include_once('viewAdmin/startAdmin.php');
         } else {
-            $_SESSION['errorString'] = 'Неправильное имя пользователя или пароль';
+            $_SESSION['errorString'] = 'Invalid email address or password.';
             include_once('viewAdmin/formLogin.php');
         }
     }

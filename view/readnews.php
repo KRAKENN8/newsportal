@@ -1,18 +1,16 @@
 <?php
-    ob_start();
-?>
+ob_start();
 
-<br>
+$newsId = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 
-<?php
-    ViewNews::ReadNews($n);
+ViewNews::ReadNews($n);
 
-    echo "<br>";
-    Controller::Comments($_GET['id']);
+Controller::Comments($newsId);
 
-    echo "<br>";
-    ViewComments::CommentsForm();
+echo '<div style="margin-top:25px; background:var(--cp-bg-surface); border:1px solid var(--cp-border); border-radius:var(--cp-radius-md); padding:25px;">';
+ViewComments::CommentsForm();
+echo '</div>';
 
-    $content = ob_get_clean();
-    include_once 'view/layout.php';
+$content = ob_get_clean();
+include_once 'view/layout.php';
 ?>

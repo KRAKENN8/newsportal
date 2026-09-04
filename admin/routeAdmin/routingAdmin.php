@@ -1,10 +1,11 @@
 <?php
-$host = explode('?', $_SERVER['REQUEST_URI'])[0];
-$num = substr_count($host, '/');
-$path = explode('/', $host)[$num];
+$rawUri = explode('?', $_SERVER['REQUEST_URI'])[0];
+$cleanUri = rtrim($rawUri, '/');
+$parts = explode('/', $cleanUri);
+$path = end($parts);
 
-if ($path == '' OR $path == 'index.php') {
-    // Главная страница
+if ($path == '' || $path == 'admin' || $path == 'index.php') {
+    // Главная страница админки
     $response = controllerAdmin::formLoginSite();
 }
 elseif ($path == 'login') {
