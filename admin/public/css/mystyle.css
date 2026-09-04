@@ -1,12 +1,13 @@
-#content {
-    margin:0 auto;
-    width:900px;
-	/*min-height:500px;
-	height: 100%;*/
-	}
-img {
-	float: left;
-	width: 100px;
+ #content{
+                margin:0 auto;
+                width:900px;
+				/*min-height:500px;
+				height: 100%;*/
+				 
+            }
+			img {
+				float: left;
+				width: 100px;
 				height:100px;
 				padding-right: 10px;
 			}
