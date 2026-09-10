@@ -3,7 +3,7 @@ ob_start();
 ?>
 
 <div class="cp-breadcrumbs">
-    <a href="./"><i class="fa fa-home"></i> Home</a> &raquo; 
+    <a href="./all"><i class="fa fa-home"></i> Home</a> &raquo; 
     <span>About CyberPulse</span>
 </div>
 
@@ -49,7 +49,7 @@ ob_start();
         <strong>CyberPulse</strong> is engineered on a lean <code>PHP (MVC) + MySQL + High-Tech Vanilla UI</code> stack. The engine features secure session authentication, dynamic category taxonomy, responsive SVG/BLOB asset storage, and fast full-text querying.
     </p>
     <div style="margin-top:20px; display:flex; gap:12px; flex-wrap:wrap;">
-        <a href="./" class="cp-btn cp-btn-primary"><i class="fa fa-home"></i> Back to Homepage</a>
+        <a href="./all" class="cp-btn cp-btn-primary"><i class="fa fa-home"></i> Back to Homepage</a>
         <a href="registerForm" class="cp-btn cp-btn-outline"><i class="fa fa-user-plus"></i> Join the Community</a>
     </div>
 </div>

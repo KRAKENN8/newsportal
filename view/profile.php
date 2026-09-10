@@ -30,7 +30,7 @@ ob_start();
         </form>
 
         <div style="text-align:center; margin-top:20px;">
-            <a href="./" style="color:var(--cp-text-dim); font-size:13px;"><i class="fa fa-chevron-left"></i> Back to Homepage</a>
+            <a href="./all" style="color:var(--cp-text-dim); font-size:13px;"><i class="fa fa-chevron-left"></i> Back to Homepage</a>
         </div>
 
     </div>

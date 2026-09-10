@@ -42,7 +42,7 @@
         <div class="divBox">
             <nav class="cp-navbar">
                 <!-- Brand -->
-                <a href="./" class="cp-brand">
+                <a href="./all" class="cp-brand">
                     <div class="cp-brand-icon">
                         <i class="fa fa-microchip"></i>
                     </div>
@@ -55,7 +55,7 @@
                 <!-- Nav Menu Links -->
                 <ul class="cp-nav-links">
                     <li class="cp-nav-item">
-                        <a href="./" class="cp-nav-link"><i class="fa fa-home"></i> Home</a>
+                        <a href="./all" class="cp-nav-link"><i class="fa fa-home"></i> Home</a>
                     </li>
                     <li class="cp-nav-item cp-dropdown">
                         <a href="#" class="cp-nav-link">
@@ -135,7 +135,7 @@
             </div>
             <div>
                 <ul class="cp-footer-links">
-                    <li><a href="./">Home</a></li>
+                    <li><a href="./all">Home</a></li>
                     <li><a href="all">News Stream</a></li>
                     <li><a href="about">About Us</a></li>
                     <li><a href="registerForm">Join Community</a></li>

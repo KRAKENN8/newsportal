@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['name'], $_POST['passw
                You have successfully logged into your <strong>Cyberpulse</strong> account.
             </p>
             <div style="display:flex; justify-content:center; gap:12px; flex-wrap:wrap;">
-                <a href="./" class="cp-btn cp-btn-primary"><i class="fa fa-home"></i> Back to Homepage</a>
+                <a href="./all" class="cp-btn cp-btn-primary"><i class="fa fa-home"></i> Back to Homepage</a>
                 <a href="admin/" class="cp-btn cp-btn-outline"><i class="fa fa-lock"></i> Author Console</a>
             </div>
         </div>

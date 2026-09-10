@@ -16,7 +16,7 @@ ob_start();
         The article or system endpoint you requested may have been moved, decommissioned, or entered incorrectly. Check the URL or explore the public news catalog.
     </p>
     <div style="display:flex; justify-content:center; gap:14px; flex-wrap:wrap;">
-        <a href="./" class="cp-btn cp-btn-primary">
+        <a href="./all" class="cp-btn cp-btn-primary">
             <i class="fa fa-home"></i> Back to Homepage
         </a>
         <a href="all" class="cp-btn cp-btn-outline">

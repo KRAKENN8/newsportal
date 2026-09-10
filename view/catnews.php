@@ -7,7 +7,7 @@ $allCategories = Category::getAllCategory();
 ?>
 
 <div class="cp-breadcrumbs">
-    <a href="./"><i class="fa fa-home"></i> Home</a> &raquo; 
+    <a href="./all"><i class="fa fa-home"></i> Home</a> &raquo; 
     <a href="all">Topics</a> &raquo; 
     <span><?php echo $catName; ?></span>
 </div>

@@ -107,7 +107,7 @@ class ViewNews {
 
         echo '<div class="cp-article-container">';
         echo '  <div class="cp-breadcrumbs">';
-        echo '    <a href="./"><i class="fa fa-home"></i> Home</a> &raquo; ';
+        echo '    <a href="./all"><i class="fa fa-home"></i> Home</a> &raquo; ';
         echo '    <a href="category?id=' . $n['category_id'] . '">' . $catName . '</a> &raquo; ';
         echo '    <span>Article #' . $n['id'] . '</span>';
         echo '  </div>';

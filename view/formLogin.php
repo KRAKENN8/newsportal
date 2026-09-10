@@ -41,7 +41,7 @@
     </form>
 
     <div class="cp-auth-footer">
-        <a href="./" style="display:inline-flex; align-items:center; gap:6px;">
+        <a href="./all" style="display:inline-flex; align-items:center; gap:6px;">
             <i class="fa fa-chevron-left"></i> Return to Homepage
         </a>
     </div>
