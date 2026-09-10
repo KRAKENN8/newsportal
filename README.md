@@ -21,7 +21,6 @@ The project follows a simple **MVC** layout on PHP, with MySQL as storage and cu
 11. [Public routes](#public-routes)
 12. [Admin routes](#admin-routes)
 13. [Configuration](#configuration)
-14. [Troubleshooting](#troubleshooting)
 
 ---
 
