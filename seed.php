@@ -27,26 +27,26 @@ $db->executeRun("SET FOREIGN_KEY_CHECKS = 1");
 
 // 3. Ensure admin and user exist
 echo "3. Seeding users...\n";
-$adminExists = $db->getOne("SELECT id FROM users WHERE email='admin@newsportal.ee'");
+$adminExists = $db->getOne("SELECT id FROM users WHERE email='admin@cyberpulse.ee'");
 $adminPassHash = password_hash('123456', PASSWORD_DEFAULT);
 $today = date('Y-m-d');
 
 if ($adminExists) {
-    $db->executeRun("UPDATE users SET username='CyberAdmin', password='$adminPassHash', status='admin', pass='123456' WHERE email='admin@newsportal.ee'");
+    $db->executeRun("UPDATE users SET username='CyberAdmin', password='$adminPassHash', status='admin', pass='123456' WHERE email='admin@cyberpulse.ee'");
     $adminId = $adminExists['id'];
 } else {
-    $db->executeRun("INSERT INTO users (username, email, password, status, registration_date, pass) VALUES ('CyberAdmin', 'admin@newsportal.ee', '$adminPassHash', 'admin', '$today', '123456')");
-    $u = $db->getOne("SELECT id FROM users WHERE email='admin@newsportal.ee'");
+    $db->executeRun("INSERT INTO users (username, email, password, status, registration_date, pass) VALUES ('CyberAdmin', 'admin@cyberpulse.ee', '$adminPassHash', 'admin', '$today', '123456')");
+    $u = $db->getOne("SELECT id FROM users WHERE email='admin@cyberpulse.ee'");
     $adminId = $u['id'];
 }
 
-$userExists = $db->getOne("SELECT id FROM users WHERE email='user@newsportal.ee'");
+$userExists = $db->getOne("SELECT id FROM users WHERE email='user@cyberpulse.ee'");
 if ($userExists) {
-    $db->executeRun("UPDATE users SET username='NeoReader', password='$adminPassHash', status='user', pass='123456' WHERE email='user@newsportal.ee'");
+    $db->executeRun("UPDATE users SET username='NeoReader', password='$adminPassHash', status='user', pass='123456' WHERE email='user@cyberpulse.ee'");
     $userId = $userExists['id'];
 } else {
-    $db->executeRun("INSERT INTO users (username, email, password, status, registration_date, pass) VALUES ('NeoReader', 'user@newsportal.ee', '$adminPassHash', 'user', '$today', '123456')");
-    $u = $db->getOne("SELECT id FROM users WHERE email='user@newsportal.ee'");
+    $db->executeRun("INSERT INTO users (username, email, password, status, registration_date, pass) VALUES ('NeoReader', 'user@cyberpulse.ee', '$adminPassHash', 'user', '$today', '123456')");
+    $u = $db->getOne("SELECT id FROM users WHERE email='user@cyberpulse.ee'");
     $userId = $u['id'];
 }
 
@@ -232,4 +232,4 @@ echo "English database seeding successfully finished!\n";
 echo "Categories: " . count($categories) . "\n";
 echo "News Articles: " . count($articles) . "\n";
 echo "Comments: " . count($comments) . "\n";
-echo "Admin Login: admin@newsportal.ee / 123456\n";
+echo "Admin Login: admin@cyberpulse.ee / 123456\n";

@@ -5,7 +5,7 @@ $cleanUri = rtrim($rawUri, '/');
 $parts = explode('/', $cleanUri);
 $path = end($parts);
 
-if ($path == '' || $path == 'newsportal' || $path == 'index' || $path == 'index.php') {
+if ($path == '' || $path == 'cyberpulse' || $path == 'index' || $path == 'index.php') {
     $response = Controller::StartSite();
 }
 elseif ($path == 'all') {

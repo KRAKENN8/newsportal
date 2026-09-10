@@ -10,7 +10,7 @@ class Database {
         $this->host = 'localhost';
         $this->user = 'root';
         $this->password = '';
-        $this->baseName = 'newsportal';
+        $this->baseName = 'cyberpulse';
         $this->connect();
     }
 

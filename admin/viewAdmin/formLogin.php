@@ -39,7 +39,7 @@ if (isset($_SESSION['userId']) && isset($_SESSION['sessionId'])) {
 
         <div style="margin-bottom:15px;">
             <label style="font-size:12px; color:var(--cp-text-muted); display:block; margin-bottom:5px;"><i class="fa fa-envelope-o"></i> Email Address</label>
-            <input type="email" name="email" class="form-control" placeholder="admin@newsportal.ee" required autofocus value="admin@newsportal.ee">
+            <input type="email" name="email" class="form-control" placeholder="admin@cyberpulse.ee" required autofocus value="admin@cyberpulse.ee">
         </div>
 
         <div style="margin-bottom:20px;">
@@ -53,7 +53,7 @@ if (isset($_SESSION['userId']) && isset($_SESSION['sessionId'])) {
 
         <div style="margin-top:20px; padding:12px; background:rgba(0, 240, 255, 0.05); border:1px dashed rgba(0, 240, 255, 0.2); border-radius:6px; font-size:12px; color:var(--cp-text-muted); text-align:center;">
             <strong>Demo Credentials:</strong><br>
-            <code>admin@newsportal.ee</code> / <code>123456</code>
+            <code>admin@cyberpulse.ee</code> / <code>123456</code>
         </div>
 
         <p style="padding-top:20px; text-align:center; margin-bottom:0;">
