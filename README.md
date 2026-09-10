@@ -20,8 +20,6 @@ The project uses a simple **MVC** layout in PHP, MySQL for storage, and Bootstra
 10. [Database](#database)
 11. [Public routes](#public-routes)
 12. [Admin routes](#admin-routes)
-13. [Configuration](#configuration)
-14. [Troubleshooting](#troubleshooting)
 
 ---
 
