@@ -30,6 +30,13 @@ class Controller {
     }
 
     public static function InsertComment($c, $id) {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        if (!isset($_SESSION['user_id'])) {
+            header('Location: formLogin');
+            exit;
+        }
         Comments::insertComment($c, $id);
         header('Location:news?id='.$id.'#ctable');
     }
@@ -65,6 +72,46 @@ class Controller {
     public static function registerUser() {
         $result = Register::registerUser();
         include_once('view/answerRegister.php');
+    }
+
+    public static function formLogin() {
+        include_once('view/formLogin.php');
+    }
+
+    public static function loginUser() {
+        $result = Login::loginUser();
+        include_once('view/answerLogin.php');
+    }
+
+    public static function profile() {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        if (!isset($_SESSION['user_id'])) {
+            header('Location: formLogin');
+            exit;
+        }
+
+        $result = null;
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username'])) {
+            $result = Profile::updateUsername($_SESSION['user_id'], $_POST['username']);
+            if ($result[0] === true) {
+                $_SESSION['username'] = trim($_POST['username']);
+            }
+        }
+
+        $user = Profile::getUserById($_SESSION['user_id']);
+        include_once 'view/profile.php';
+    }
+
+    public static function logout() {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        session_unset();
+        session_destroy();
+        header('Location: ./');
+        exit;
     }
 }
 ?>

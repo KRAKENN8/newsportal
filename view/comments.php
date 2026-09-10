@@ -4,10 +4,22 @@ class ViewComments {
      * Comment submission form
      */
     public static function CommentsForm() {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
         $newsId = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+
+        if (!isset($_SESSION['user_id'])) {
+            echo '<div class="cp-comment-form-container" style="text-align:center; padding:25px;">';
+            echo '  <p style="color:var(--cp-text-dim); margin-bottom:15px;"><i class="fa fa-lock"></i> Войдите в аккаунт, чтобы оставить комментарий.</p>';
+            echo '  <a href="formLogin" class="cp-btn cp-btn-primary"><i class="fa fa-sign-in"></i> Log In to Comment</a>';
+            echo '</div>';
+            return;
+        }
+
         echo '<div class="cp-comment-form-container">';
         echo '  <h4 style="color:#ffffff; font-weight:700; margin-bottom:15px; display:flex; align-items:center; gap:8px;">';
-        echo '    <i class="fa fa-pencil-square-o" style="color:var(--cp-cyan);"></i> Join the Discussion';
+        echo '    <i class="fa fa-pencil-square-o" style="color:var(--cp-cyan);"></i> Commenting as ' . htmlspecialchars($_SESSION['username']);
         echo '  </h4>';
         echo '  <form action="insertcomment" method="POST" class="cp-comment-form">';
         echo '    <input type="hidden" name="id" value="' . $newsId . '">';
@@ -82,4 +94,3 @@ class ViewComments {
         echo '<span>' . $count . '</span>';
     }
 }
-?>

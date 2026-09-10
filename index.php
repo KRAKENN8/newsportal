@@ -5,6 +5,8 @@
     require 'model/News.php';
     require 'model/Comments.php';
     require 'model/Register.php';
+    require 'model/Login.php';
+    require 'model/Profile.php';
 
     include_once 'view/news.php';
     include_once 'view/comments.php';

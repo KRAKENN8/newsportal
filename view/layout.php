@@ -1,3 +1,4 @@
+<?php if (session_status() === PHP_SESSION_NONE) { session_start(); } ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -82,9 +83,24 @@
 
                 <!-- Actions -->
                 <div class="cp-header-actions">
-                    <a href="registerForm" class="cp-btn cp-btn-outline">
-                        <i class="fa fa-user-plus"></i> Sign Up
-                    </a>
+                    <?php if (isset($_SESSION['user_id'])): ?>
+                        <li class="cp-nav-item cp-dropdown">
+                            <a href="#" class="cp-nav-link">
+                                <i class="fa fa-user-circle"></i> <?php echo htmlspecialchars($_SESSION['username']); ?> <i class="fa fa-angle-down"></i>
+                            </a>
+                            <ul class="cp-dropdown-menu">
+                                <li><a href="profile"><i class="fa fa-id-badge"></i> My Profile</a></li>
+                                <li><a href="logout"><i class="fa fa-sign-out"></i> Log Out</a></li>
+                            </ul>
+                        </li>
+                    <?php else: ?>
+                        <a href="registerForm" class="cp-btn cp-btn-outline">
+                            <i class="fa fa-user-plus"></i> Sign Up
+                        </a>
+                        <a href="formLogin" class="cp-btn cp-btn-outline">
+                            <i class="fa fa-user-plus"></i> Log In
+                        </a>
+                    <?php endif; ?>
                     <a href="admin/" class="cp-btn cp-btn-admin" title="Admin Control Panel">
                         <i class="fa fa-lock"></i> Admin
                     </a>
@@ -123,6 +139,7 @@
                     <li><a href="all">News Stream</a></li>
                     <li><a href="about">About Us</a></li>
                     <li><a href="registerForm">Join Community</a></li>
+                    <li><a href="loginForm">Login</a></li>
                     <li><a href="admin/">Dashboard</a></li>
                 </ul>
             </div>

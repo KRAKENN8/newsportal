@@ -18,13 +18,21 @@ elseif ($path == 'news' && isset($_GET['id'])) {
     $response = Controller::NewsByID($_GET['id']);
 }
 elseif ($path == 'insertcomment') {
-    $comment = isset($_POST['comment']) ? $_POST['comment'] : (isset($_GET['comment']) ? $_GET['comment'] : '');
-    $id = isset($_POST['id']) ? $_POST['id'] : (isset($_GET['id']) ? $_GET['id'] : 0);
-    if (!empty($comment) && !empty($id)) {
-        $response = Controller::InsertComment($comment, $id);
-    } else {
-        header('Location: news?id=' . (int)$id);
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
     }
+    $comment = isset($_POST['comment']) ? $_POST['comment'] : '';
+    $id = isset($_POST['id']) ? (int)$_POST['id'] : 0;
+
+    if (!isset($_SESSION['user_id'])) {
+        header('Location: formLogin');
+        exit;
+    }
+    if ($comment !== '' && $id > 0) {
+        Controller::InsertComment($comment, $id);
+    }
+    header('Location: news?id=' . $id . '#cp-comments');
+    exit;
 }
 elseif ($path == 'search') {
     $keyword = isset($_GET['otsi']) ? $_GET['otsi'] : (isset($_GET['q']) ? $_GET['q'] : '');
@@ -38,6 +46,18 @@ elseif ($path == 'registerForm') {
 }
 elseif ($path == 'registerAnswer') {
     $response = Controller::registerUser();
+}
+elseif ($path == 'formLogin') {
+    $response = Controller::formLogin();
+}
+elseif ($path == 'loginAnswer') {
+    $response = Controller::loginUser();
+}
+elseif ($path == 'profile') {
+    $response = Controller::profile();
+}
+elseif ($path == 'logout') {
+    Controller::logout();
 }
 else {
     $response = Controller::error404();
