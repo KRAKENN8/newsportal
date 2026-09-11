@@ -12,5 +12,5 @@ ViewComments::CommentsForm();
 echo '</div>';
 
 $content = ob_get_clean();
-include_once 'view/layout.php';
+include 'view/layout.php';
 ?>

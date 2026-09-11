@@ -1,4 +1,8 @@
 <?php
+
+require_once __DIR__ . '/../view/news.php';
+require_once __DIR__ . '/../view/comments.php';
+
 class Controller {
     public static function StartSite() {
         $arr = News::getLast10News();

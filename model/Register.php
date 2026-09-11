@@ -5,7 +5,7 @@ class Register {
         if (isset($_POST['save'])) {
             $errorString = "";
             $name = isset($_POST['name']) ? trim($_POST['name']) : '';
-            $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
+            $email = filter_var($_POST['email'] ?? '', FILTER_VALIDATE_EMAIL);
             if (!$name) {
                 $errorString .= "Name cannot be empty.<br/>";
             }
@@ -25,7 +25,6 @@ class Register {
                 $db = new Database();
                 $conn = $db->connect();
 
-                // Check duplicate email
                 $checkStmt = $conn->prepare("SELECT id FROM users WHERE email = :email");
                 $checkStmt->execute([':email' => $email]);
                 if ($checkStmt->fetch()) {
