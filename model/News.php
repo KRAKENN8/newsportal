@@ -1,42 +1,57 @@
 <?php
 class News {
     public static function getLast10News() {
-        $query = "SELECT items.*, category.name AS category_name FROM items LEFT JOIN category ON items.category_id = category.id ORDER BY items.id DESC LIMIT 6";
+        $query = "SELECT items.*, category.name AS category_name, COALESCE(c.comments_count, 0) AS comments_count 
+                  FROM items 
+                  LEFT JOIN category ON items.category_id = category.id 
+                  LEFT JOIN (SELECT news_id, COUNT(id) AS comments_count FROM details GROUP BY news_id) AS c ON items.id = c.news_id 
+                  ORDER BY items.id DESC LIMIT 6";
         $db = new Database();
-        $arr = $db->getAll($query);
-        return $arr;
+        return $db->getAll($query);
     }
 
     public static function getAllNews() {
-        $query = "SELECT items.*, category.name AS category_name FROM items LEFT JOIN category ON items.category_id = category.id ORDER BY items.id DESC";
+        $query = "SELECT items.*, category.name AS category_name, COALESCE(c.comments_count, 0) AS comments_count 
+                  FROM items 
+                  LEFT JOIN category ON items.category_id = category.id 
+                  LEFT JOIN (SELECT news_id, COUNT(id) AS comments_count FROM details GROUP BY news_id) AS c ON items.id = c.news_id 
+                  ORDER BY items.id DESC";
         $db = new Database();
-        $arr = $db->getAll($query);
-        return $arr;
+        return $db->getAll($query);
     }
 
     public static function getNewsByCategoryID($id) {
-        $safeId = (int)$id;
-        $query = "SELECT items.*, category.name AS category_name FROM items LEFT JOIN category ON items.category_id = category.id WHERE items.category_id=$safeId ORDER BY items.id DESC";
+        $query = "SELECT items.*, category.name AS category_name, COALESCE(c.comments_count, 0) AS comments_count 
+                  FROM items 
+                  LEFT JOIN category ON items.category_id = category.id 
+                  LEFT JOIN (SELECT news_id, COUNT(id) AS comments_count FROM details GROUP BY news_id) AS c ON items.id = c.news_id 
+                  WHERE items.category_id = :cat_id 
+                  ORDER BY items.id DESC";
         $db = new Database();
-        $arr = $db->getAll($query);
-        return $arr;
+        return $db->getAll($query, [':cat_id' => (int)$id]);
     }
 
     public static function getNewsByID($id) {
-        $safeId = (int)$id;
-        $query = "SELECT items.*, category.name AS category_name, users.username AS author_name FROM items LEFT JOIN category ON items.category_id = category.id LEFT JOIN users ON items.user_id = users.id WHERE items.id=$safeId";
+        $query = "SELECT items.*, category.name AS category_name, users.username AS author_name, COALESCE(c.comments_count, 0) AS comments_count 
+                  FROM items 
+                  LEFT JOIN category ON items.category_id = category.id 
+                  LEFT JOIN users ON items.user_id = users.id 
+                  LEFT JOIN (SELECT news_id, COUNT(id) AS comments_count FROM details GROUP BY news_id) AS c ON items.id = c.news_id 
+                  WHERE items.id = :id";
         $db = new Database();
-        $n = $db->getOne($query);
-        return $n;
+        return $db->getOne($query, [':id' => (int)$id]);
     }
 
     public static function searchNews($keyword) {
-        $db = new Database();
-        $conn = $db->connect();
         $searchTerm = '%' . trim($keyword) . '%';
-        $stmt = $conn->prepare("SELECT items.*, category.name AS category_name FROM items LEFT JOIN category ON items.category_id = category.id WHERE items.title LIKE :q1 OR items.text LIKE :q2 ORDER BY items.id DESC");
-        $stmt->execute([':q1' => $searchTerm, ':q2' => $searchTerm]);
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $query = "SELECT items.*, category.name AS category_name, COALESCE(c.comments_count, 0) AS comments_count 
+                  FROM items 
+                  LEFT JOIN category ON items.category_id = category.id 
+                  LEFT JOIN (SELECT news_id, COUNT(id) AS comments_count FROM details GROUP BY news_id) AS c ON items.id = c.news_id 
+                  WHERE items.title LIKE :q1 OR items.text LIKE :q2 
+                  ORDER BY items.id DESC";
+        $db = new Database();
+        return $db->getAll($query, [':q1' => $searchTerm, ':q2' => $searchTerm]);
     }
 }
 ?>

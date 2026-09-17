@@ -11,6 +11,13 @@ class Database {
      * Database() instance will use this PDO connection instead of opening
      * a real MySQL connection. Production code never touches this.
      */
+    private static ?PDO $sharedConn = null;
+
+    /**
+     * Global hook used ONLY by the test-suite. When set, every new
+     * Database() instance will use this PDO connection instead of opening
+     * a real MySQL connection. Production code never touches this.
+     */
     public static ?PDO $testConnection = null;
 
     /**
@@ -29,6 +36,11 @@ class Database {
             return;
         }
 
+        if (self::$sharedConn !== null) {
+            $this->conn = self::$sharedConn;
+            return;
+        }
+
         $this->host = 'localhost';
         $this->user = 'root';
         $this->password = '';
@@ -37,7 +49,10 @@ class Database {
     }
 
     function __destruct() {
-        $this->disconnect();
+        // Do not sever the shared connection on transient object destruction
+        if ($this->conn !== self::$sharedConn && $this->conn !== self::$testConnection) {
+            $this->disconnect();
+        }
     }
 
     function connect() {
@@ -52,6 +67,7 @@ class Database {
                         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
                     )
                 );
+                self::$sharedConn = $this->conn;
             } catch (Exception $e) {
                 die('Connection failed: ' . $e->getMessage());
             }
@@ -65,25 +81,30 @@ class Database {
         }
     }
 
-    function getOne($query) {
+    function getOne($query, array $params = []) {
         $stmt = $this->conn->prepare($query);
-        $stmt->execute();
+        $stmt->execute($params);
         $stmt->setFetchMode(PDO::FETCH_ASSOC);
         $response = $stmt->fetch();
         return $response;
     }
 
-    function getAll($query) {
+    function getAll($query, array $params = []) {
         $stmt = $this->conn->prepare($query);
-        $stmt->execute();
+        $stmt->execute($params);
         $stmt->setFetchMode(PDO::FETCH_ASSOC);
         $response = $stmt->fetchAll();
         return $response;
     }
 
-    function executeRun($query) {
-        $response = $this->conn->exec($query);
-        return $response;
+    function executeRun($query, array $params = []) {
+        if (empty($params)) {
+            $response = $this->conn->exec($query);
+            return $response;
+        }
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute($params);
+        return $stmt->rowCount();
     }
 }
 ?>

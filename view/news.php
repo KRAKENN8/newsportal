@@ -72,7 +72,11 @@ class ViewNews {
             echo '    <div class="cp-card-footer">';
             echo '      <div class="cp-comments-counter">';
             echo '        <i class="fa fa-comments-o"></i> ';
-            Controller::CommentsCount($value['id']);
+            if (isset($value['comments_count'])) {
+                ViewComments::CommentsCount($value['comments_count']);
+            } else {
+                Controller::CommentsCount($value['id']);
+            }
             echo '      </div>';
             echo '      <a href="news?id=' . $value['id'] . '" class="cp-read-more">Read Story <i class="fa fa-arrow-right"></i></a>';
             echo '    </div>';
