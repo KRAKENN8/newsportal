@@ -2,6 +2,9 @@
 class controllerAdmin {
     // Форма авторизации админа
     public static function formLoginSite() {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
         if (isset($_SESSION['sessionId']) && isset($_SESSION['status']) && $_SESSION['status'] === 'admin') {
             include_once('viewAdmin/startAdmin.php');
         } else {
@@ -10,11 +13,15 @@ class controllerAdmin {
     }
 
     public static function loginAction() {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
         $logIn = modelAdmin::userAuthentication();
-        if (isset($logIn) && $logIn == true) {
-            include_once('viewAdmin/startAdmin.php');
+        if ($logIn === true && isset($_SESSION['status']) && $_SESSION['status'] === 'admin') {
+            header('Location: ./');
+            exit;
         } else {
-            $_SESSION['errorString'] = 'Invalid email address or password.';
+            $_SESSION['errorString'] = 'Invalid administrator credentials or insufficient privileges.';
             include_once('viewAdmin/formLogin.php');
         }
     }

@@ -2,21 +2,24 @@
 class modelAdmin {
     // АВТОРИЗАЦИЯ АДМИНА
     public static function userAuthentication() {
-        if (isset($_SESSION['sessionId'])) {
-            $logIn = true;
-        } else {
-            $logIn = false;
-            if (isset($_POST['btnLogin'])) {
-                if (isset($_POST['email']) && isset($_POST['password']) && $_POST['email'] != "" && $_POST['password'] != "") {
-                    $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
-                    $password = filter_input(INPUT_POST, 'password');
-                    $sql = "SELECT * FROM users WHERE email = '".$email."'";
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        if (isset($_SESSION['sessionId']) && isset($_SESSION['status']) && $_SESSION['status'] === 'admin') {
+            return true;
+        }
+
+        $logIn = false;
+        if (isset($_POST['btnLogin'])) {
+            if (!empty($_POST['email']) && !empty($_POST['password'])) {
+                $email = filter_var(trim($_POST['email']), FILTER_VALIDATE_EMAIL);
+                $password = $_POST['password'];
+
+                if ($email) {
                     $db = new Database();
-                    $item = $db->getOne($sql);
-                    if ($item != null) {
-                        $loginEmail = strtolower($_POST['email']);
-                        $password = $_POST['password'];
-                        if ($loginEmail == $item['email'] && password_verify($password, $item['password'])) {
+                    $item = $db->getOne("SELECT * FROM users WHERE email = :email LIMIT 1", [':email' => strtolower($email)]);
+                    if ($item && isset($item['status']) && $item['status'] === 'admin') {
+                        if (password_verify($password, $item['password'])) {
                             $_SESSION['sessionId'] = session_id();
                             $_SESSION['userId'] = $item['id'];
                             $_SESSION['name'] = $item['username'];
@@ -32,11 +35,14 @@ class modelAdmin {
 
     // Выход ИЗ АДМИНКИ
     public static function userLogout() {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
         unset($_SESSION['sessionId']);
         unset($_SESSION['userId']);
         unset($_SESSION['name']);
         unset($_SESSION['status']);
-        session_destroy();
+        unset($_SESSION['errorString']);
         return;
     }
 }

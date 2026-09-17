@@ -44,9 +44,9 @@ class modelAdminNews {
     // news detail id
     public static function getNewsDetail($id) {
         $safeId = (int)$id;
-        $query = "SELECT items.*, category.name, users.username FROM items, category, users WHERE items.category_id=category.id AND items.user_id=users.id AND items.id=".$safeId;
+        $query = "SELECT items.*, category.name, users.username FROM items, category, users WHERE items.category_id=category.id AND items.user_id=users.id AND items.id = :id";
         $db = new Database();
-        $arr = $db->getOne($query);
+        $arr = $db->getOne($query, [':id' => $safeId]);
         return $arr;
     }
 

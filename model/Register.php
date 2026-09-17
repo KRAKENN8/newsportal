@@ -39,7 +39,7 @@ class Register {
                     ':email' => $email,
                     ':password' => $passwordHash,
                     ':reg_date' => $date,
-                    ':pass' => $password
+                    ':pass' => $passwordHash
                 ]);
 
                 if ($item) {
