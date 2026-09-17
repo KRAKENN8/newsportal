@@ -125,6 +125,11 @@ class ViewNews {
         echo '      <div>';
         Controller::CommentsCountWithAncor($n['id']);
         echo '      </div>';
+        echo '      <div>';
+        echo '        <button type="button" class="cp-share-btn" onclick="navigator.clipboard.writeText(window.location.href); var b=this; b.innerHTML=\'<i class=\\\'fa fa-check\\\'></i> Copied!\'; setTimeout(function(){ b.innerHTML=\'<i class=\\\'fa fa-share-alt\\\'></i> Share\'; }, 2000);">';
+        echo '          <i class="fa fa-share-alt"></i> Share';
+        echo '        </button>';
+        echo '      </div>';
         echo '    </div>';
         echo '  </header>';
 

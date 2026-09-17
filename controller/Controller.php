@@ -42,7 +42,12 @@ class Controller {
             exit;
         }
         Comments::insertComment($c, $id);
-        header('Location:news?id='.$id.'#ctable');
+        $_SESSION['flash'] = [
+            'type' => 'success',
+            'message' => 'Your comment has been posted!'
+        ];
+        header('Location:news?id='.$id.'#cp-comments');
+        exit;
     }
 
     public static function Comments($newsid) {
@@ -84,6 +89,12 @@ class Controller {
 
     public static function loginUser() {
         $result = Login::loginUser();
+        if ($result[0] === true) {
+            $_SESSION['flash'] = [
+                'type' => 'success',
+                'message' => 'Welcome back to CyberPulse!'
+            ];
+        }
         include_once('view/answerLogin.php');
     }
 
@@ -101,6 +112,10 @@ class Controller {
             $result = Profile::updateUsername($_SESSION['user_id'], $_POST['username']);
             if ($result[0] === true) {
                 $_SESSION['username'] = trim($_POST['username']);
+                $_SESSION['flash'] = [
+                    'type' => 'success',
+                    'message' => 'Your username has been updated successfully!'
+                ];
             }
         }
 
@@ -114,6 +129,13 @@ class Controller {
         }
         session_unset();
         session_destroy();
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        $_SESSION['flash'] = [
+            'type' => 'info',
+            'message' => 'You have logged out successfully.'
+        ];
         header('Location: ./');
         exit;
     }
