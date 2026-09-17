@@ -13,15 +13,15 @@ echo "Starting CyberPulse Database Migration & English Seeding...\n";
 echo "1. Upgrading table schema...\n";
 $db->executeRun("ALTER TABLE news MODIFY picture MEDIUMBLOB NOT NULL");
 $db->executeRun("ALTER TABLE category CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
-$db->executeRun("ALTER TABLE news CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
-$db->executeRun("ALTER TABLE comments CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
+$db->executeRun("ALTER TABLE items CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
+$db->executeRun("ALTER TABLE details CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
 $db->executeRun("ALTER TABLE users CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
 
 // 2. Clear old test data
 echo "2. Cleaning old data...\n";
 $db->executeRun("SET FOREIGN_KEY_CHECKS = 0");
-$db->executeRun("TRUNCATE TABLE comments");
-$db->executeRun("TRUNCATE TABLE news");
+$db->executeRun("TRUNCATE TABLE details");
+$db->executeRun("TRUNCATE TABLE items");
 $db->executeRun("TRUNCATE TABLE category");
 $db->executeRun("SET FOREIGN_KEY_CHECKS = 1");
 
@@ -204,8 +204,8 @@ foreach ($articles as $art) {
 }
 
 // 7. Seed Comments (English)
-echo "6. Seeding English comments...\n";
-$comments = [
+echo "6. Seeding English details...\n";
+$details = [
     [1, $userId, 'Incredible leap in quantum coherence! Operating near ambient temperature solves the massive cryogenic cooling bottleneck.'],
     [1, $adminId, 'Editorial note: We will continue updating this report as more benchmark data is released by the laboratory.'],
     [2, $userId, 'An 88.6% solve rate on SWE-bench is astounding. Software engineering is officially evolving toward high-level systems architecture.'],
@@ -216,10 +216,10 @@ $comments = [
     [6, $userId, 'Europa remains our best bet for finding life in the solar system. The prebiotic chemical signatures are extraordinarily promising!']
 ];
 
-$stmtComment = $conn->prepare("INSERT INTO comments (news_id, user_id, text, date) VALUES (:news_id, :user_id, :text, :date)");
+$stmtComment = $conn->prepare("INSERT INTO details (news_id, user_id, text, date) VALUES (:news_id, :user_id, :text, :date)");
 $date = date('Y-m-d H:i:s');
 
-foreach ($comments as $c) {
+foreach ($details as $c) {
     $stmtComment->execute([
         ':news_id' => $c[0],
         ':user_id' => $c[1],
@@ -231,5 +231,5 @@ foreach ($comments as $c) {
 echo "English database seeding successfully finished!\n";
 echo "Categories: " . count($categories) . "\n";
 echo "News Articles: " . count($articles) . "\n";
-echo "Comments: " . count($comments) . "\n";
+echo "Comments: " . count($details) . "\n";
 echo "Admin Login: admin@cyberpulse.ee / 123456\n";

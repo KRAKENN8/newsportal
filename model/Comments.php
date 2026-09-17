@@ -11,7 +11,7 @@ class Comments {
         $db = new Database();
         $conn = $db->connect();
 
-        $query = "INSERT INTO comments (news_id, user_id, text, date) 
+        $query = "INSERT INTO details (news_id, user_id, text, date) 
                   VALUES (:news_id, :user_id, :text, CURRENT_TIMESTAMP)";
         $stmt = $conn->prepare($query);
         return $stmt->execute([
@@ -25,11 +25,11 @@ class Comments {
         $db = new Database();
         $conn = $db->connect();
 
-        $query = "SELECT comments.*, users.username 
-                  FROM comments 
-                  LEFT JOIN users ON comments.user_id = users.id 
-                  WHERE comments.news_id = :news_id 
-                  ORDER BY comments.id DESC";
+        $query = "SELECT details.*, users.username 
+                  FROM details 
+                  LEFT JOIN users ON details.user_id = users.id 
+                  WHERE details.news_id = :news_id 
+                  ORDER BY details.id DESC";
         $stmt = $conn->prepare($query);
         $stmt->execute([':news_id' => $id]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -39,7 +39,7 @@ class Comments {
         $db = new Database();
         $conn = $db->connect();
 
-        $query = "SELECT COUNT(id) as count FROM comments WHERE news_id = :news_id";
+        $query = "SELECT COUNT(id) as count FROM details WHERE news_id = :news_id";
         $stmt = $conn->prepare($query);
         $stmt->execute([':news_id' => $id]);
         return $stmt->fetch(PDO::FETCH_ASSOC);

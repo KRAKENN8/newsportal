@@ -1,14 +1,14 @@
 <?php
 class News {
     public static function getLast10News() {
-        $query = "SELECT news.*, category.name AS category_name FROM news LEFT JOIN category ON news.category_id = category.id ORDER BY news.id DESC LIMIT 6";
+        $query = "SELECT items.*, category.name AS category_name FROM items LEFT JOIN category ON items.category_id = category.id ORDER BY items.id DESC LIMIT 6";
         $db = new Database();
         $arr = $db->getAll($query);
         return $arr;
     }
 
     public static function getAllNews() {
-        $query = "SELECT news.*, category.name AS category_name FROM news LEFT JOIN category ON news.category_id = category.id ORDER BY news.id DESC";
+        $query = "SELECT items.*, category.name AS category_name FROM items LEFT JOIN category ON items.category_id = category.id ORDER BY items.id DESC";
         $db = new Database();
         $arr = $db->getAll($query);
         return $arr;
@@ -16,7 +16,7 @@ class News {
 
     public static function getNewsByCategoryID($id) {
         $safeId = (int)$id;
-        $query = "SELECT news.*, category.name AS category_name FROM news LEFT JOIN category ON news.category_id = category.id WHERE news.category_id=$safeId ORDER BY news.id DESC";
+        $query = "SELECT items.*, category.name AS category_name FROM items LEFT JOIN category ON items.category_id = category.id WHERE items.category_id=$safeId ORDER BY items.id DESC";
         $db = new Database();
         $arr = $db->getAll($query);
         return $arr;
@@ -24,7 +24,7 @@ class News {
 
     public static function getNewsByID($id) {
         $safeId = (int)$id;
-        $query = "SELECT news.*, category.name AS category_name, users.username AS author_name FROM news LEFT JOIN category ON news.category_id = category.id LEFT JOIN users ON news.user_id = users.id WHERE news.id=$safeId";
+        $query = "SELECT items.*, category.name AS category_name, users.username AS author_name FROM items LEFT JOIN category ON items.category_id = category.id LEFT JOIN users ON items.user_id = users.id WHERE items.id=$safeId";
         $db = new Database();
         $n = $db->getOne($query);
         return $n;
@@ -34,7 +34,7 @@ class News {
         $db = new Database();
         $conn = $db->connect();
         $searchTerm = '%' . trim($keyword) . '%';
-        $stmt = $conn->prepare("SELECT news.*, category.name AS category_name FROM news LEFT JOIN category ON news.category_id = category.id WHERE news.title LIKE :q1 OR news.text LIKE :q2 ORDER BY news.id DESC");
+        $stmt = $conn->prepare("SELECT items.*, category.name AS category_name FROM items LEFT JOIN category ON items.category_id = category.id WHERE items.title LIKE :q1 OR items.text LIKE :q2 ORDER BY items.id DESC");
         $stmt->execute([':q1' => $searchTerm, ':q2' => $searchTerm]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }

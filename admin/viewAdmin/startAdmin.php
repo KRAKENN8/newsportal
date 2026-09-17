@@ -1,9 +1,9 @@
 <?php
 ob_start();
 $db = new Database();
-$newsCount = $db->getOne("SELECT COUNT(id) as c FROM news")['c'] ?? 0;
+$newsCount = $db->getOne("SELECT COUNT(id) as c FROM items")['c'] ?? 0;
 $catCount = $db->getOne("SELECT COUNT(id) as c FROM category")['c'] ?? 0;
-$commCount = $db->getOne("SELECT COUNT(id) as c FROM comments")['c'] ?? 0;
+$commCount = $db->getOne("SELECT COUNT(id) as c FROM details")['c'] ?? 0;
 $usersCount = $db->getOne("SELECT COUNT(id) as c FROM users")['c'] ?? 0;
 ?>
 

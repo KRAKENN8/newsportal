@@ -11,7 +11,7 @@ class ViewComments {
 
         if (!isset($_SESSION['user_id'])) {
             echo '<div class="cp-comment-form-container" style="text-align:center; padding:25px;">';
-            echo '  <p style="color:var(--cp-text-dim); margin-bottom:15px;"><i class="fa fa-lock"></i> Войдите в аккаунт, чтобы оставить комментарий.</p>';
+            echo '  <p style="color:var(--cp-text-dim); margin-bottom:15px;"><i class="fa fa-lock"></i> Log in to your account to leave a comment.</p>';
             echo '  <a href="formLogin" class="cp-btn cp-btn-primary"><i class="fa fa-sign-in"></i> Log In to Comment</a>';
             echo '</div>';
             return;
