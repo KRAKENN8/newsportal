@@ -132,3 +132,48 @@ This document outlines **3 major shortcomings** identified across the CyberPulse
 3. **Seamless Integration Across Public & Admin Layouts**:
    - Replace native `confirm()` in `view/comments.php`, `admin/viewAdmin/commentsList.php`, and `admin/viewAdmin/newsDeleteForm.php`.
    - Include the modal component seamlessly in `view/layout.php` and `admin/viewAdmin/templates/layout.php`.
+
+---
+
+## Shortcoming 8: Cross-Site Request Forgery (CSRF) on State-Changing Actions
+
+### Problem Description
+1. **Absence of Anti-CSRF Tokens**: Comment submission, deletion, profile editing, and all admin operations (adding/editing/deleting articles, moderating comments) lacked CSRF validation.
+2. **Cross-Origin Exploitability**: An authenticated user or administrator visiting a malicious site could be tricked into triggering state-altering actions via forged requests.
+
+### Improvement Plan & Implementation
+1. **Unified Security Engine (`inc/Security.php`)**:
+   - Added `Security::getCsrfToken()`, `Security::renderCsrfField()`, and `Security::validateCsrfToken()`.
+2. **Token Embedding & Strict Verification**:
+   - Embedded anti-CSRF tokens in public comment forms, profile forms, and deletion links (`deletecomment?id=...&csrf=...`).
+   - Embedded tokens in administrative forms (`newsAddForm.php`, `newsEditForm.php`, `newsDeleteForm.php`) and deletion links (`newsDelResult`, `commentDel`).
+   - Enforced cryptographic token validation with `hash_equals()` in routing handlers.
+
+---
+
+## Shortcoming 9: Insecure Session Management & Lack of HTTP Security Headers
+
+### Problem Description
+1. **Session Fixation Risk**: `session_regenerate_id()` was never invoked upon user or admin login.
+2. **Permissive Cookie Settings**: Session cookies did not enforce `HttpOnly` or `SameSite=Lax`, leaving session identifiers vulnerable to client-side script inspection.
+3. **Missing Security Headers**: The server emitted no headers protecting against Clickjacking (`X-Frame-Options`) or MIME-type sniffing (`X-Content-Type-Options`).
+
+### Improvement Plan & Implementation
+1. **Defensive HTTP Headers**: Dispatched `X-Frame-Options: SAMEORIGIN`, `X-Content-Type-Options: nosniff`, `Referrer-Policy: strict-origin-when-cross-origin`, and `Permissions-Policy`.
+2. **Hardened Session Parameters**: Configured `HttpOnly=true` and `SameSite=Lax` cookie flags in `Security::initSession()`.
+3. **Session Rotation**: Implemented automatic `session_regenerate_id(true)` upon successful user login (`Login.php`) and administrator login (`modelAdmin.php`).
+
+---
+
+## Shortcoming 10: Unrestricted File Upload & Credential Brute-Force Exposure
+
+### Problem Description
+1. **Unvalidated Image Uploads**: Article picture uploads lacked size limits and MIME-type verification, potentially allowing server memory exhaustion or unverified payloads.
+2. **No Login Rate Limiting**: The user and admin login endpoints accepted unlimited consecutive authentication attempts without throttling.
+
+### Improvement Plan & Implementation
+1. **Strict File Upload Validation**:
+   - Added `validateAndProcessImageUpload()` enforcing 5 MB maximum size, `finfo` magic bytes inspection for image formats (JPEG, PNG, WEBP, GIF), and SVG sanitization stripping embedded `<script>` and event handlers.
+2. **Rate Limiting Engine**:
+   - Added session/IP-based exponential throttling in `Security::checkRateLimit()`, locking out login attempts after 5 consecutive failures for a 300-second cooldown period.
+
