@@ -18,8 +18,11 @@ class modelAdminNews {
                 $userId = isset($_SESSION['userId']) ? (int)$_SESSION['userId'] : 1;
 
                 $image = '';
-                if (isset($_FILES['picture']['tmp_name']) && is_uploaded_file($_FILES['picture']['tmp_name'])) {
-                    $image = file_get_contents($_FILES['picture']['tmp_name']);
+                if (isset($_FILES['picture'])) {
+                    $uploaded = self::validateAndProcessImageUpload($_FILES['picture']);
+                    if ($uploaded !== null) {
+                        $image = $uploaded;
+                    }
                 }
                 if (empty($image)) {
                     // Default SVG placeholder
@@ -39,6 +42,48 @@ class modelAdminNews {
             }
         }
         return $test;
+    }
+
+    /**
+     * Validate and process image upload with strict MIME & size limits
+     */
+    public static function validateAndProcessImageUpload(array $file): ?string {
+        if (!isset($file['tmp_name']) || !is_uploaded_file($file['tmp_name'])) {
+            return null;
+        }
+
+        // 1. Enforce max file size: 5 MB
+        $maxSizeBytes = 5 * 1024 * 1024;
+        if (($file['size'] ?? 0) > $maxSizeBytes || filesize($file['tmp_name']) > $maxSizeBytes) {
+            $_SESSION['adminFlash'] = 'Upload rejected: Image exceeds maximum allowed size of 5 MB.';
+            return null;
+        }
+
+        // 2. Validate MIME type using finfo
+        $finfo = new finfo(FILEINFO_MIME_TYPE);
+        $mime = $finfo->file($file['tmp_name']);
+        $allowedMimes = [
+            'image/jpeg',
+            'image/png',
+            'image/webp',
+            'image/gif'
+        ];
+
+        $content = file_get_contents($file['tmp_name']);
+        if (in_array($mime, $allowedMimes, true)) {
+            return $content;
+        }
+
+        // If SVG, perform sanitization to prevent Stored XSS
+        if ($mime === 'image/svg+xml' || (strpos($content, '<svg') !== false)) {
+            $cleanSvg = preg_replace('/<script\b[^>]*>(.*?)<\/script>/is', '', $content);
+            $cleanSvg = preg_replace('/(on\w+\s*=\s*["\'][^"\']*["\'])/i', '', $cleanSvg);
+            $cleanSvg = preg_replace('/javascript:/i', 'blocked:', $cleanSvg);
+            return $cleanSvg;
+        }
+
+        $_SESSION['adminFlash'] = 'Upload rejected: Only JPEG, PNG, WEBP, GIF, and sanitized SVG images are allowed.';
+        return null;
     }
 
     // news detail id
@@ -63,13 +108,17 @@ class modelAdminNews {
                 $db = new Database();
                 $conn = $db->connect();
 
-                if (isset($_FILES['picture']['tmp_name']) && is_uploaded_file($_FILES['picture']['tmp_name'])) {
-                    $image = file_get_contents($_FILES['picture']['tmp_name']);
+                $uploaded = null;
+                if (isset($_FILES['picture'])) {
+                    $uploaded = self::validateAndProcessImageUpload($_FILES['picture']);
+                }
+
+                if ($uploaded !== null) {
                     $stmt = $conn->prepare("UPDATE items SET title = :title, text = :text, picture = :picture, category_id = :category_id WHERE id = :id");
                     $test = $stmt->execute([
                         ':title' => $title,
                         ':text' => $text,
-                        ':picture' => $image,
+                        ':picture' => $uploaded,
                         ':category_id' => $idCategory,
                         ':id' => $safeId
                     ]);
