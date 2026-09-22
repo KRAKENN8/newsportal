@@ -75,6 +75,6 @@ if (isset($_SESSION["userId"]) && isset($_SESSION["sessionId"])) {
 </div>
 
 <!-- Custom Confirmation Modal Dialog -->
-<?php include dirname(__DIR__, 2) . '/view/modalConfirm.php'; ?>
+<?php include dirname(__DIR__, 3) . '/view/modalConfirm.php'; ?>
 </body>
 </html>

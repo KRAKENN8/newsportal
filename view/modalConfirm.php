@@ -141,6 +141,13 @@
                     if (target.tagName.toLowerCase() === 'a' && target.href) {
                         window.location.href = target.href;
                     } else if (target.type === 'submit' && target.form) {
+                        if (target.name) {
+                            var hiddenInput = document.createElement('input');
+                            hiddenInput.type = 'hidden';
+                            hiddenInput.name = target.name;
+                            hiddenInput.value = target.value || '1';
+                            target.form.appendChild(hiddenInput);
+                        }
                         target.form.submit();
                     } else if (typeof target.onclick === 'function') {
                         target.onclick();

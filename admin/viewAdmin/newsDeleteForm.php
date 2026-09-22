@@ -30,6 +30,7 @@
         </div>
 
         <form method="POST" action="newsDelResult?id=<?php echo $id; ?>">
+            <input type="hidden" name="save" value="1">
             <div style="margin-bottom:15px;">
                 <label style="display:block; font-weight:600; margin-bottom:6px; color:var(--cp-text-muted);">Title</label>
                 <div style="font-size:16px; font-weight:700; color:#fff;"><?php echo htmlspecialchars($detail['title']); ?></div>
@@ -48,7 +49,7 @@
             </div>
 
             <div style="display:flex; align-items:center; gap:12px; padding-top:15px; border-top:1px solid var(--cp-border);">
-                <button type="submit" class="cp-btn cp-btn-danger" name="save" data-confirm="Are you sure you want to permanently delete article #<?php echo $id; ?> and all its associated data?" data-confirm-title="Purge Publication #<?php echo $id; ?>" data-confirm-subtitle="ADMIN PERMANENT PURGE" data-confirm-btn="Yes, Delete Publication" data-confirm-type="danger">
+                <button type="submit" class="cp-btn cp-btn-danger" name="save" data-confirm="Are you sure you want to permanently delete article #<?php echo $id; ?> and all its associated data?" data-confirm-title="Confirm Article Deletion" data-confirm-subtitle="ARE YOU SURE? // ВЫ УВЕРЕНЫ?" data-confirm-btn="Yes, Delete Publication" data-confirm-type="danger">
                     <i class="fa fa-trash"></i> Yes, Delete Publication
                 </button>
                 <a href="newsAdmin" class="cp-btn cp-btn-outline">

@@ -59,6 +59,12 @@ class controllerAdminNews {
     public static function newsDeleteResult($id) {
         self::checkAdminAuth();
         $test = modelAdminNews::getNewsDelete($id);
+        if ($test && isset($_GET['from']) && $_GET['from'] === 'list') {
+            if (session_status() === PHP_SESSION_NONE) { session_start(); }
+            $_SESSION['adminFlash'] = 'Publication #' . (int)$id . ' was successfully deleted.';
+            header('Location: newsAdmin');
+            exit;
+        }
         include_once('viewAdmin/newsDeleteForm.php');
     }
 }

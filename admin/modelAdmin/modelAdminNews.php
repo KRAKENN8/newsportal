@@ -91,7 +91,7 @@ class modelAdminNews {
     public static function getNewsDelete($id) {
         $test = false;
         $safeId = (int)$id;
-        if (isset($_POST['save'])) {
+        if (isset($_POST['save']) || isset($_GET['confirm']) || $_SERVER['REQUEST_METHOD'] === 'POST') {
             $db = new Database();
             $conn = $db->connect();
             // Also delete associated comments

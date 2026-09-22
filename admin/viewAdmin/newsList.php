@@ -13,6 +13,13 @@
         </a>
     </div>
 
+    <?php if (isset($_SESSION['adminFlash'])): ?>
+        <div class="alert alert-info" style="margin: 15px 20px 0;">
+            <i class="fa fa-check-circle"></i> <?php echo htmlspecialchars($_SESSION['adminFlash']); ?>
+        </div>
+        <?php unset($_SESSION['adminFlash']); ?>
+    <?php endif; ?>
+
     <div style="overflow-x:auto;">
         <table class="cp-admin-table">
             <thead>
@@ -47,7 +54,8 @@
                         echo '    <div style="display:inline-flex; gap:6px;">';
                         echo '      <a href="../news?id=' . $row['id'] . '" target="_blank" class="btn-action" style="background:rgba(255,255,255,0.05); color:#fff;" title="View on website"><i class="fa fa-eye"></i></a>';
                         echo '      <a href="newsEdit?id=' . $row['id'] . '" class="btn-action btn-action-edit" title="Edit article"><i class="fa fa-pencil"></i> Edit</a>';
-                        echo '      <a href="newsDel?id=' . $row['id'] . '" class="btn-action btn-action-delete" title="Delete article"><i class="fa fa-trash"></i></a>';
+                        $delTitle = htmlspecialchars($row['title'], ENT_QUOTES);
+                        echo '      <a href="newsDelResult?id=' . $row['id'] . '&confirm=1&from=list" class="btn-action btn-action-delete" data-confirm="Are you sure you want to permanently delete article &quot;' . $delTitle . '&quot; (ID #' . $row['id'] . ')? This action cannot be undone and will delete all associated comments." data-confirm-title="Confirm Article Deletion" data-confirm-subtitle="ARE YOU SURE? // ВЫ УВЕРЕНЫ?" data-confirm-btn="Yes, Delete Article" data-confirm-type="danger" title="Delete article"><i class="fa fa-trash"></i></a>';
                         echo '    </div>';
                         echo '  </td>';
                         echo '</tr>';
