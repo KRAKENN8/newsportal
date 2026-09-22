@@ -795,6 +795,117 @@ a:hover {
   box-shadow: 0 0 12px var(--cp-cyan-glow);
 }
 
+/* Sorting Bar */
+.cp-sort-bar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-bottom: 25px;
+  padding: 10px 16px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--cp-border);
+  border-radius: var(--cp-radius-sm);
+  font-size: 13px;
+}
+
+.cp-sort-label {
+  color: var(--cp-text-dim);
+  font-family: var(--cp-font-mono);
+  font-size: 12px;
+}
+
+.cp-sort-buttons {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cp-sort-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--cp-border);
+  border-radius: 6px;
+  color: var(--cp-text-muted);
+  font-size: 12px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.cp-sort-btn:hover {
+  background: rgba(0, 240, 255, 0.08);
+  color: #fff;
+  border-color: rgba(0, 240, 255, 0.3);
+}
+
+.cp-sort-btn.active {
+  background: rgba(0, 240, 255, 0.15);
+  color: var(--cp-cyan);
+  border-color: var(--cp-cyan);
+  font-weight: 600;
+}
+
+/* Pagination */
+.cp-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin: 40px 0 20px;
+  flex-wrap: wrap;
+}
+
+.cp-pagination-btn, .cp-page-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 38px;
+  height: 38px;
+  padding: 0 14px;
+  background: var(--cp-bg-surface);
+  border: 1px solid var(--cp-border);
+  border-radius: var(--cp-radius-sm);
+  color: var(--cp-text-muted);
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.cp-pagination-btn:hover, .cp-page-number:hover {
+  background: rgba(0, 240, 255, 0.1);
+  color: var(--cp-cyan);
+  border-color: var(--cp-cyan);
+}
+
+.cp-page-number.active {
+  background: var(--cp-cyan);
+  color: #090d16;
+  border-color: var(--cp-cyan);
+  font-weight: 700;
+  box-shadow: 0 0 12px var(--cp-cyan-glow);
+}
+
+.cp-pagination-disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.cp-pagination-pages {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.cp-page-ellipsis {
+  color: var(--cp-text-dim);
+  padding: 0 6px;
+}
+
 /* Footer */
 .cp-footer {
   background: #060910;

@@ -64,3 +64,53 @@ This document outlines **3 major shortcomings** identified across the CyberPulse
    - Add a floating "Back to Top" button that smoothly returns the user to the top of long articles.
    - Add a "Share / Copy Link" button on full article pages (`view/news.php`) with instant clipboard copy and tooltip feedback.
    - Add active link state indicators for current routes in the navbar.
+
+---
+
+## Shortcoming 4: Absence of Pagination & Content Sorting Controls in Article Feeds
+
+### Problem Description
+1. **Unbounded Article Feeds**: `News::getAllNews()`, `News::getNewsByCategoryID()`, and `News::searchNews()` fetch and return every matching row without pagination. As articles accumulate, page weights and DOM complexity balloon, hurting page performance and user readability.
+2. **Missing Sorting Options**: Readers had no ability to change the listing order. Articles could only be viewed in default reverse-chronological order (`id DESC`), with no mechanism to view "Most Discussed" (by comment count) or "Oldest" content.
+
+### Improvement Plan
+1. **Server-Side Pagination Engine**:
+   - Implement `News::getNewsPaginated($page, $perPage, $categoryId, $keyword, $sort)` computing total item counts, total pages, and using parameterized `LIMIT :limit OFFSET :offset`.
+   - Update `Controller::AllNews()`, `Controller::NewsByCatID()`, and `Controller::SearchNews()` to read `page` and `sort` query parameters.
+2. **Interactive UI Pagination & Sort Bar**:
+   - Build a reusable pagination control with Previous, Next, numeric buttons, and ellipsis logic in `view/news.php`.
+   - Add a sleek filter/sorting bar with active states ("Newest", "Most Discussed", "Oldest") preserving category and search keyword parameters.
+
+---
+
+## Shortcoming 5: Missing Comment Moderation in Admin Console & Author Deletion
+
+### Problem Description
+1. **No Admin Comment Moderation**: The public site prominently displayed "All comments are actively moderated", but the admin console possessed zero comments management capabilities. Administrators had no interface to inspect discussions or remove spam, abusive remarks, or off-topic messages.
+2. **No User Self-Deletion**: Registered readers who submitted comments had no way to delete their own remarks in case of typos, remorse, or privacy considerations.
+
+### Improvement Plan
+1. **Dedicated Admin Comment Management Console**:
+   - Create `modelAdminComments.php` with `getCommentsList()` and `deleteComment($id)`.
+   - Build `controllerAdminComments.php` protected by `checkAdminAuth()`.
+   - Create `admin/viewAdmin/commentsList.php` showing comment ID, author, associated article title, date, preview snippet, and direct delete action.
+   - Add "Comments" navigation item with icon to the admin panel header.
+2. **Public Comment Deletion for Authors and Admins**:
+   - Add `Comments::deleteComment($commentId, $userId, $isAdmin)` in `model/Comments.php`.
+   - Introduce `/deletecomment` route and controller action with ownership/admin verification.
+   - Add a discrete, styled delete button in `view/comments.php` rendered exclusively for the comment's author or logged-in administrators.
+
+---
+
+## Shortcoming 6: Static Reading Experience without Progress Indicator or Live Search
+
+### Problem Description
+1. **No Reading Progress Feedback**: For extensive deep-dive articles (e.g., quantum computing, 2nm silicon, AI agents), users had no indication of their reading depth or position within long-form content.
+2. **Slow, Reload-Heavy Search**: Finding articles required entering a query and triggering a full page reload. There was no real-time auto-suggest or quick search dropdown.
+
+### Improvement Plan
+1. **High-Tech Reading Progress Indicator**:
+   - Add a fixed, neon-gradient progress bar (`.cp-reading-progress`) at the very top of article pages that dynamically recalculates scroll depth via requestAnimationFrame.
+2. **Instant Live Search Autocomplete**:
+   - Add `/api/search` JSON endpoint in `route/routing.php` returning matching articles with thumbnail data, title, category, and URL.
+   - Integrate debounced client-side auto-complete dropdown into both the desktop and mobile search inputs in `view/layout.php`, allowing readers to preview and jump directly to matching stories as they type.

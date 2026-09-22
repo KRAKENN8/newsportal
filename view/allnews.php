@@ -28,7 +28,14 @@ $categories = Category::getAllCategory();
 </div>
 
 <?php
+$currentSort = isset($pagination['sort']) ? $pagination['sort'] : (isset($_GET['sort']) ? $_GET['sort'] : 'latest');
+ViewNews::SortBar($currentSort, 'all');
+
 ViewNews::AllNews($arr);
+
+if (isset($pagination)) {
+    ViewNews::Pagination($pagination['page'], $pagination['totalPages'], 'all', ['sort' => $currentSort]);
+}
 ?>
 
 <?php

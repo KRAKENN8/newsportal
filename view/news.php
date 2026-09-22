@@ -94,6 +94,76 @@ class ViewNews {
     }
 
     /**
+     * Render sorting selector tabs
+     */
+    public static function SortBar($currentSort, $baseUrl, $queryParams = []) {
+        $sorts = [
+            'latest'  => ['label' => 'Latest', 'icon' => 'fa-clock-o'],
+            'popular' => ['label' => 'Most Discussed', 'icon' => 'fa-fire'],
+            'oldest'  => ['label' => 'Oldest', 'icon' => 'fa-history']
+        ];
+
+        echo '<div class="cp-sort-bar">';
+        echo '  <span class="cp-sort-label"><i class="fa fa-sliders"></i> Sort:</span>';
+        echo '  <div class="cp-sort-buttons">';
+        foreach ($sorts as $key => $meta) {
+            $params = array_merge($queryParams, ['sort' => $key, 'page' => 1]);
+            $qs = http_build_query($params);
+            $url = $baseUrl . ($qs ? '?' . $qs : '');
+            $activeClass = ($currentSort === $key) ? ' active' : '';
+            echo '<a href="' . htmlspecialchars($url) . '" class="cp-sort-btn' . $activeClass . '">';
+            echo '  <i class="fa ' . $meta['icon'] . '"></i> ' . $meta['label'];
+            echo '</a>';
+        }
+        echo '  </div>';
+        echo '</div>';
+    }
+
+    /**
+     * Render pagination controls
+     */
+    public static function Pagination($currentPage, $totalPages, $baseUrl, $queryParams = []) {
+        if ($totalPages <= 1) {
+            return;
+        }
+
+        echo '<nav class="cp-pagination" aria-label="Article navigation">';
+        
+        // Prev button
+        if ($currentPage > 1) {
+            $prevParams = array_merge($queryParams, ['page' => $currentPage - 1]);
+            $prevUrl = $baseUrl . '?' . http_build_query($prevParams);
+            echo '<a href="' . htmlspecialchars($prevUrl) . '" class="cp-pagination-btn cp-pagination-prev"><i class="fa fa-chevron-left"></i> Prev</a>';
+        } else {
+            echo '<span class="cp-pagination-btn cp-pagination-disabled"><i class="fa fa-chevron-left"></i> Prev</span>';
+        }
+
+        echo '<div class="cp-pagination-pages">';
+        for ($i = 1; $i <= $totalPages; $i++) {
+            if ($i == 1 || $i == $totalPages || ($i >= $currentPage - 2 && $i <= $currentPage + 2)) {
+                $pageParams = array_merge($queryParams, ['page' => $i]);
+                $pageUrl = $baseUrl . '?' . http_build_query($pageParams);
+                $activeClass = ($i == $currentPage) ? ' active' : '';
+                echo '<a href="' . htmlspecialchars($pageUrl) . '" class="cp-page-number' . $activeClass . '">' . $i . '</a>';
+            } elseif ($i == $currentPage - 3 || $i == $currentPage + 3) {
+                echo '<span class="cp-page-ellipsis">&hellip;</span>';
+            }
+        }
+        echo '</div>';
+
+        // Next button
+        if ($currentPage < $totalPages) {
+            $nextParams = array_merge($queryParams, ['page' => $currentPage + 1]);
+            $nextUrl = $baseUrl . '?' . http_build_query($nextParams);
+            echo '<a href="' . htmlspecialchars($nextUrl) . '" class="cp-pagination-btn cp-pagination-next">Next <i class="fa fa-chevron-right"></i></a>';
+        } else {
+            echo '<span class="cp-pagination-btn cp-pagination-disabled">Next <i class="fa fa-chevron-right"></i></span>';
+        }
+
+        echo '</nav>';
+    }
+
+    /**
      * Render single news article details
      */
     public static function ReadNews($n) {

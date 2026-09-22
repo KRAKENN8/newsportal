@@ -19,7 +19,15 @@ $queryClean = isset($_GET['otsi']) ? htmlspecialchars($_GET['otsi']) : (isset($_
 
 <?php
 if (!empty($arr)) {
+    $currentSort = isset($pagination['sort']) ? $pagination['sort'] : (isset($_GET['sort']) ? $_GET['sort'] : 'latest');
+    $otsiRaw = isset($_GET['otsi']) ? $_GET['otsi'] : (isset($_GET['q']) ? $_GET['q'] : '');
+    ViewNews::SortBar($currentSort, 'search', ['otsi' => $otsiRaw]);
+
     ViewNews::NewsByCategory($arr);
+
+    if (isset($pagination)) {
+        ViewNews::Pagination($pagination['page'], $pagination['totalPages'], 'search', ['otsi' => $otsiRaw, 'sort' => $currentSort]);
+    }
 } else {
     echo '<div style="background:var(--cp-bg-surface); border:1px solid var(--cp-border); border-radius:var(--cp-radius-md); padding:40px 20px; text-align:center; margin:20px 0;">';
     echo '  <i class="fa fa-search-minus" style="font-size:48px; color:var(--cp-cyan); opacity:0.6; margin-bottom:15px; display:block;"></i>';

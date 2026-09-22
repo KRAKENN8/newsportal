@@ -15,12 +15,18 @@ class Controller {
     }
 
     public static function AllNews() {
-        $arr = News::getAllNews();
+        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+        $sort = isset($_GET['sort']) ? trim($_GET['sort']) : 'latest';
+        $pagination = News::getNewsPaginated($page, 6, null, null, $sort);
+        $arr = $pagination['items'];
         include_once 'view/allnews.php';
     }
 
     public static function NewsByCatID($id) {
-        $arr = News::getNewsByCategoryID($id);
+        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+        $sort = isset($_GET['sort']) ? trim($_GET['sort']) : 'latest';
+        $pagination = News::getNewsPaginated($page, 6, $id, null, $sort);
+        $arr = $pagination['items'];
         include_once 'view/catnews.php';
     }
 
@@ -66,7 +72,10 @@ class Controller {
     }
 
     public static function SearchNews($keyword) {
-        $arr = News::searchNews($keyword);
+        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+        $sort = isset($_GET['sort']) ? trim($_GET['sort']) : 'latest';
+        $pagination = News::getNewsPaginated($page, 6, null, $keyword, $sort);
+        $arr = $pagination['items'];
         include_once 'view/search.php';
     }
 
