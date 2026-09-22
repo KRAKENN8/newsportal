@@ -26,6 +26,9 @@ class Login {
                     if (session_status() === PHP_SESSION_NONE) {
                         session_start();
                     }
+                    if (!headers_sent()) {
+                        @session_regenerate_id(true);
+                    }
                     $_SESSION['user_id']  = $user['id'];
                     $_SESSION['username'] = $user['username'];
                     $controll = array(0 => true, 1 => "Login successful.");

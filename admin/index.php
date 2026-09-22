@@ -1,6 +1,8 @@
 <?php
-session_start();
-//session_destroy();
+require_once('../inc/Security.php');
+Security::sendSecurityHeaders();
+Security::initSession();
+
 require_once('../inc/Database.php'); // База данных
 
 include_once("modelAdmin/modelAdmin.php");

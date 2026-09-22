@@ -20,6 +20,9 @@ class modelAdmin {
                     $item = $db->getOne("SELECT * FROM users WHERE email = :email LIMIT 1", [':email' => strtolower($email)]);
                     if ($item && isset($item['status']) && $item['status'] === 'admin') {
                         if (password_verify($password, $item['password'])) {
+                            if (!headers_sent()) {
+                                @session_regenerate_id(true);
+                            }
                             $_SESSION['sessionId'] = session_id();
                             $_SESSION['userId'] = $item['id'];
                             $_SESSION['name'] = $item['username'];

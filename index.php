@@ -1,5 +1,8 @@
 <?php
-    session_start();
+    require_once 'inc/Security.php';
+    Security::sendSecurityHeaders();
+    Security::initSession();
+
     include_once 'inc/Database.php';
     require 'model/Category.php';
     require 'model/News.php';
