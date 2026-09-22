@@ -28,6 +28,14 @@ elseif ($path == 'insertcomment') {
         header('Location: formLogin');
         exit;
     }
+    if (!Security::validateCsrfToken()) {
+        $_SESSION['flash'] = [
+            'type' => 'error',
+            'message' => 'Security validation failed: Invalid or missing CSRF token.'
+        ];
+        header('Location: news?id=' . $id . '#cp-comments');
+        exit;
+    }
     if ($comment !== '' && $id > 0) {
         Controller::InsertComment($comment, $id);
     }
@@ -35,6 +43,17 @@ elseif ($path == 'insertcomment') {
     exit;
 }
 elseif ($path == 'deletecomment' && isset($_GET['id'])) {
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+    if (!Security::validateCsrfToken()) {
+        $_SESSION['flash'] = [
+            'type' => 'error',
+            'message' => 'Security validation failed: Invalid or missing CSRF token.'
+        ];
+        header('Location: ./all');
+        exit;
+    }
     Controller::DeleteComment($_GET['id']);
 }
 elseif ($path == 'quicksearch') {

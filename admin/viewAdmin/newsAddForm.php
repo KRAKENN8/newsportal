@@ -25,6 +25,7 @@
     } else {
     ?>
         <form method="POST" action="newsAddResult" enctype="multipart/form-data">
+            <?php echo Security::renderCsrfField(); ?>
             <div style="margin-bottom:20px;">
                 <label style="display:block; font-weight:600; margin-bottom:8px; color:#fff;">Article Title</label>
                 <input type="text" name="title" class="form-control" placeholder="e.g. Breakthrough in Neuromorphic Photonic Silicon..." required autofocus>

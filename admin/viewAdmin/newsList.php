@@ -55,7 +55,7 @@
                         echo '      <a href="../news?id=' . $row['id'] . '" target="_blank" class="btn-action" style="background:rgba(255,255,255,0.05); color:#fff;" title="View on website"><i class="fa fa-eye"></i></a>';
                         echo '      <a href="newsEdit?id=' . $row['id'] . '" class="btn-action btn-action-edit" title="Edit article"><i class="fa fa-pencil"></i> Edit</a>';
                         $delTitle = htmlspecialchars($row['title'], ENT_QUOTES);
-                        echo '      <a href="newsDelResult?id=' . $row['id'] . '&confirm=1&from=list" class="btn-action btn-action-delete" data-confirm="Are you sure you want to permanently delete article &quot;' . $delTitle . '&quot; (ID #' . $row['id'] . ')? This action cannot be undone and will delete all associated comments." data-confirm-title="Confirm Article Deletion" data-confirm-subtitle="ARE YOU SURE? // ВЫ УВЕРЕНЫ?" data-confirm-btn="Yes, Delete Article" data-confirm-type="danger" title="Delete article"><i class="fa fa-trash"></i></a>';
+                        echo '      <a href="newsDelResult?id=' . $row['id'] . '&confirm=1&from=list&csrf=' . Security::getCsrfToken() . '" class="btn-action btn-action-delete" data-confirm="Are you sure you want to permanently delete article &quot;' . $delTitle . '&quot; (ID #' . $row['id'] . ')? This action cannot be undone and will delete all associated comments." data-confirm-title="Confirm Article Deletion" data-confirm-subtitle="ARE YOU SURE? // ВЫ УВЕРЕНЫ?" data-confirm-btn="Yes, Delete Article" data-confirm-type="danger" title="Delete article"><i class="fa fa-trash"></i></a>';
                         echo '    </div>';
                         echo '  </td>';
                         echo '</tr>';

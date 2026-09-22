@@ -154,13 +154,17 @@ class Controller {
 
         $result = null;
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username'])) {
-            $result = Profile::updateUsername($_SESSION['user_id'], $_POST['username']);
-            if ($result[0] === true) {
-                $_SESSION['username'] = trim($_POST['username']);
-                $_SESSION['flash'] = [
-                    'type' => 'success',
-                    'message' => 'Your username has been updated successfully!'
-                ];
+            if (!Security::validateCsrfToken()) {
+                $result = [false, 'Security validation failed: Invalid CSRF token.'];
+            } else {
+                $result = Profile::updateUsername($_SESSION['user_id'], $_POST['username']);
+                if ($result[0] === true) {
+                    $_SESSION['username'] = trim($_POST['username']);
+                    $_SESSION['flash'] = [
+                        'type' => 'success',
+                        'message' => 'Your username has been updated successfully!'
+                    ];
+                }
             }
         }
 

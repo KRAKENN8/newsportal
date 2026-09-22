@@ -23,6 +23,7 @@ class ViewComments {
         echo '  </h4>';
         echo '  <form action="insertcomment" method="POST" class="cp-comment-form">';
         echo '    <input type="hidden" name="id" value="' . $newsId . '">';
+        echo '    ' . Security::renderCsrfField();
         echo '    <textarea name="comment" placeholder="Share your perspective, benchmark insights, or feedback..." required></textarea>';
         echo '    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">';
         echo '      <span style="font-size:12px; color:var(--cp-text-dim);"><i class="fa fa-shield"></i> All comments are actively moderated</span>';
@@ -62,7 +63,7 @@ class ViewComments {
                 echo '      <span class="cp-comment-author">' . $author . '</span>';
                 echo '      <span class="cp-comment-date"><i class="fa fa-clock-o"></i> ' . $dateFormatted . '</span>';
                 if (isset($_SESSION['user_id']) && ((int)$_SESSION['user_id'] === (int)$value['user_id'] || ($_SESSION['status'] ?? '') === 'admin')) {
-                    echo '  <a href="deletecomment?id=' . $value['id'] . '" class="cp-comment-del-btn" data-confirm="Are you sure you want to delete this comment? This action cannot be undone." data-confirm-title="Delete Comment" data-confirm-subtitle="COMMUNITY MODERATION" data-confirm-btn="Delete" data-confirm-type="danger" title="Delete comment"><i class="fa fa-trash-o"></i> Delete</a>';
+                    echo '  <a href="deletecomment?id=' . $value['id'] . '&csrf=' . Security::getCsrfToken() . '" class="cp-comment-del-btn" data-confirm="Are you sure you want to delete this comment? This action cannot be undone." data-confirm-title="Delete Comment" data-confirm-subtitle="COMMUNITY MODERATION" data-confirm-btn="Delete" data-confirm-type="danger" title="Delete comment"><i class="fa fa-trash-o"></i> Delete</a>';
                 }
                 echo '    </div>';
                 echo '    <p class="cp-comment-text">' . nl2br($text) . '</p>';

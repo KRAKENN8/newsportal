@@ -19,6 +19,7 @@ ob_start();
         <?php endif; ?>
 
         <form method="POST" action="profile">
+            <?php echo Security::renderCsrfField(); ?>
             <div class="cp-form-group">
                 <label for="username" class="cp-form-label"><i class="fa fa-user"></i> Username</label>
                 <input id="username" type="text" class="cp-form-control" name="username"

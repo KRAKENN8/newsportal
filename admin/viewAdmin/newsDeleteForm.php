@@ -31,6 +31,7 @@
 
         <form method="POST" action="newsDelResult?id=<?php echo $id; ?>">
             <input type="hidden" name="save" value="1">
+            <?php echo Security::renderCsrfField(); ?>
             <div style="margin-bottom:15px;">
                 <label style="display:block; font-weight:600; margin-bottom:6px; color:var(--cp-text-muted);">Title</label>
                 <div style="font-size:16px; font-weight:700; color:#fff;"><?php echo htmlspecialchars($detail['title']); ?></div>

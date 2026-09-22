@@ -27,6 +27,7 @@
         $imgSrc = ViewNews::getImageSrc($detail['picture']);
     ?>
         <form method="POST" action="newsEditResult?id=<?php echo $id; ?>" enctype="multipart/form-data">
+            <?php echo Security::renderCsrfField(); ?>
             <div style="margin-bottom:20px;">
                 <label style="display:block; font-weight:600; margin-bottom:8px; color:#fff;">Article Title</label>
                 <input type="text" name="title" class="form-control" required value="<?php echo htmlspecialchars($detail['title']); ?>">

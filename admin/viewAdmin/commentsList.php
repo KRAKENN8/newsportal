@@ -54,7 +54,7 @@
                         echo '  <td style="color:var(--cp-text-muted); font-size:13px; line-height:1.5; max-width:350px;">' . nl2br($text) . '</td>';
                         echo '  <td style="color:var(--cp-text-dim); font-size:12px; font-family:var(--cp-font-mono);">' . $dateFormatted . '</td>';
                         echo '  <td style="text-align:right;">';
-                        echo '    <a href="commentDel?id=' . $row['id'] . '" class="btn-action btn-action-delete" data-confirm="Are you sure you want to permanently delete comment #' . $row['id'] . ' by ' . $author . '? This action cannot be undone." data-confirm-title="Confirm Comment Deletion" data-confirm-subtitle="ARE YOU SURE? // ВЫ УВЕРЕНЫ?" data-confirm-btn="Yes, Delete Comment" data-confirm-type="danger" title="Delete comment"><i class="fa fa-trash"></i> Delete</a>';
+                        echo '    <a href="commentDel?id=' . $row['id'] . '&csrf=' . Security::getCsrfToken() . '" class="btn-action btn-action-delete" data-confirm="Are you sure you want to permanently delete comment #' . $row['id'] . ' by ' . $author . '? This action cannot be undone." data-confirm-title="Confirm Comment Deletion" data-confirm-subtitle="ARE YOU SURE? // ВЫ УВЕРЕНЫ?" data-confirm-btn="Yes, Delete Comment" data-confirm-type="danger" title="Delete comment"><i class="fa fa-trash"></i> Delete</a>';
                         echo '  </td>';
                         echo '</tr>';
                     }
