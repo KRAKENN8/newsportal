@@ -4,6 +4,13 @@ class Login {
         $controll = array(0 => false, 1 => 'Unknown error occurred.');
 
         if (isset($_POST['save'])) {
+            if (class_exists('Security')) {
+                $throttle = Security::checkRateLimit('login', 5, 300);
+                if ($throttle['isBlocked']) {
+                    return array(0 => false, 1 => "Too many failed login attempts. Please try again in " . $throttle['remainingSeconds'] . " seconds.");
+                }
+            }
+
             $email = filter_var($_POST['name'] ?? '', FILTER_VALIDATE_EMAIL);
             $password = isset($_POST['password']) ? trim($_POST['password']) : '';
 
@@ -29,13 +36,22 @@ class Login {
                     if (!headers_sent()) {
                         @session_regenerate_id(true);
                     }
+                    if (class_exists('Security')) {
+                        Security::clearRateLimit('login');
+                    }
                     $_SESSION['user_id']  = $user['id'];
                     $_SESSION['username'] = $user['username'];
                     $controll = array(0 => true, 1 => "Login successful.");
                 } else {
+                    if (class_exists('Security')) {
+                        Security::recordFailedAttempt('login');
+                    }
                     $controll = array(0 => false, 1 => "Incorrect password.");
                 }
             } else {
+                if (class_exists('Security')) {
+                    Security::recordFailedAttempt('login');
+                }
                 $controll = array(0 => false, 1 => "No user found with this email address.");
             }
         }
