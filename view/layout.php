@@ -26,6 +26,9 @@ $currentRoute = end($parts);
 </head>
 <body>
 
+    <!-- Reading Progress Bar -->
+    <div class="cp-reading-progress" id="cpReadingProgress"></div>
+
     <!-- Header -->
     <header class="cp-header">
         <!-- Ticker line -->
@@ -79,13 +82,16 @@ $currentRoute = end($parts);
                     </li>
                 </ul>
 
-                <!-- Search form -->
-                <form action="search" method="GET" class="cp-search-form">
-                    <input type="text" name="otsi" class="cp-search-input" placeholder="Search tech topics..." required value="<?php echo isset($_GET['otsi']) ? htmlspecialchars($_GET['otsi']) : ''; ?>">
-                    <button type="submit" class="cp-search-btn" title="Search">
-                        <i class="fa fa-search"></i>
-                    </button>
-                </form>
+                <!-- Search form with live autocomplete -->
+                <div class="cp-search-wrapper">
+                    <form action="search" method="GET" class="cp-search-form" id="cpSearchForm">
+                        <input type="text" name="otsi" id="cpSearchInput" class="cp-search-input" placeholder="Search tech topics..." autocomplete="off" required value="<?php echo isset($_GET['otsi']) ? htmlspecialchars($_GET['otsi']) : ''; ?>">
+                        <button type="submit" class="cp-search-btn" title="Search">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </form>
+                    <div class="cp-search-dropdown" id="cpSearchDropdown"></div>
+                </div>
 
                 <!-- Actions -->
                 <div class="cp-header-actions">
@@ -134,10 +140,13 @@ $currentRoute = end($parts);
             <button type="button" class="cp-mobile-close" id="cpMobileClose" aria-label="Close menu">&times;</button>
         </div>
         <div class="cp-mobile-drawer-body">
-            <form action="search" method="GET" class="cp-mobile-search">
-                <input type="text" name="otsi" placeholder="Search tech articles..." required value="<?php echo isset($_GET['otsi']) ? htmlspecialchars($_GET['otsi']) : ''; ?>">
-                <button type="submit" aria-label="Search"><i class="fa fa-search"></i></button>
-            </form>
+            <div class="cp-search-wrapper" style="width:100%; position:relative;">
+                <form action="search" method="GET" class="cp-mobile-search">
+                    <input type="text" name="otsi" id="cpMobileSearchInput" placeholder="Search tech articles..." autocomplete="off" required value="<?php echo isset($_GET['otsi']) ? htmlspecialchars($_GET['otsi']) : ''; ?>">
+                    <button type="submit" aria-label="Search"><i class="fa fa-search"></i></button>
+                </form>
+                <div class="cp-search-dropdown" id="cpMobileSearchDropdown"></div>
+            </div>
 
             <ul class="cp-mobile-links">
                 <li>
@@ -286,10 +295,18 @@ $currentRoute = end($parts);
                 });
             }
 
-            // Back to top behavior
+            // Reading Progress Bar & Back to top behavior
+            var progressEl = document.getElementById('cpReadingProgress');
             window.addEventListener('scroll', function() {
+                var winScroll = document.documentElement.scrollTop || document.body.scrollTop;
+                var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                if (progressEl && height > 0) {
+                    var scrolled = (winScroll / height) * 100;
+                    progressEl.style.width = Math.min(100, Math.max(0, scrolled)) + '%';
+                }
+
                 if (backToTop) {
-                    if (window.scrollY > 300) {
+                    if (winScroll > 300) {
                         backToTop.classList.add('cp-visible');
                     } else {
                         backToTop.classList.remove('cp-visible');
@@ -312,6 +329,64 @@ $currentRoute = end($parts);
                     setTimeout(function() { toast.remove(); }, 400);
                 }, 4000);
             }
+
+            // Live Search Autocomplete Functionality
+            function setupLiveSearch(inputId, dropdownId) {
+                var input = document.getElementById(inputId);
+                var dropdown = document.getElementById(dropdownId);
+                if (!input || !dropdown) return;
+                var searchTimer = null;
+
+                input.addEventListener('input', function() {
+                    clearTimeout(searchTimer);
+                    var q = this.value.trim();
+                    if (q.length < 2) {
+                        dropdown.innerHTML = '';
+                        dropdown.classList.remove('active');
+                        return;
+                    }
+                    searchTimer = setTimeout(function() {
+                        fetch('quicksearch?q=' + encodeURIComponent(q))
+                            .then(function(res) { return res.json(); })
+                            .then(function(data) {
+                                if (data && data.results && data.results.length > 0) {
+                                    var html = '<div class="cp-search-dropdown-list">';
+                                    data.results.forEach(function(item) {
+                                        html += '<a href="news?id=' + item.id + '" class="cp-search-dropdown-item">';
+                                        html += '  <span class="cp-search-badge">' + item.category_name + '</span>';
+                                        html += '  <div class="cp-search-item-title">' + item.title + '</div>';
+                                        html += '  <div class="cp-search-item-meta">';
+                                        html += '    <span><i class="fa fa-clock-o"></i> ' + item.reading_time + '</span>';
+                                        html += '    <span><i class="fa fa-comments-o"></i> ' + item.comments_count + '</span>';
+                                        html += '  </div>';
+                                        html += '</a>';
+                                    });
+                                    html += '<a href="search?otsi=' + encodeURIComponent(q) + '" class="cp-search-dropdown-all">';
+                                    html += '  <span>View all matching results</span> <i class="fa fa-arrow-right"></i>';
+                                    html += '</a>';
+                                    html += '</div>';
+                                    dropdown.innerHTML = html;
+                                    dropdown.classList.add('active');
+                                } else {
+                                    dropdown.innerHTML = '<div class="cp-search-no-results"><i class="fa fa-info-circle"></i> No publications found for &ldquo;' + q + '&rdquo;</div>';
+                                    dropdown.classList.add('active');
+                                }
+                            })
+                            .catch(function() {
+                                dropdown.classList.remove('active');
+                            });
+                    }, 200);
+                });
+
+                document.addEventListener('click', function(e) {
+                    if (!input.contains(e.target) && !dropdown.contains(e.target)) {
+                        dropdown.classList.remove('active');
+                    }
+                });
+            }
+
+            setupLiveSearch('cpSearchInput', 'cpSearchDropdown');
+            setupLiveSearch('cpMobileSearchInput', 'cpMobileSearchDropdown');
         });
     </script>
 

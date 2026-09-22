@@ -298,6 +298,120 @@ a:hover {
   color: var(--cp-cyan);
 }
 
+/* Reading Progress Bar */
+.cp-reading-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0%;
+  height: 3px;
+  background: linear-gradient(90deg, var(--cp-cyan), var(--cp-purple));
+  box-shadow: 0 0 10px var(--cp-cyan);
+  z-index: 9999;
+  transition: width 0.08s ease-out;
+  pointer-events: none;
+}
+
+/* Live Search Wrapper & Dropdown */
+.cp-search-wrapper {
+  position: relative;
+}
+
+.cp-search-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  width: 100%;
+  min-width: 320px;
+  background: #0e1526;
+  border: 1px solid var(--cp-border);
+  border-radius: var(--cp-radius-md);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), 0 0 20px rgba(0, 240, 255, 0.1);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  z-index: 1100;
+  display: none;
+  overflow: hidden;
+  animation: cp-fade-in 0.15s ease forwards;
+}
+
+.cp-search-dropdown.active {
+  display: block;
+}
+
+.cp-search-dropdown-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.cp-search-dropdown-item {
+  padding: 10px 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  color: #ffffff;
+  transition: all 0.15s ease;
+  text-decoration: none;
+}
+
+.cp-search-dropdown-item:hover {
+  background: rgba(0, 240, 255, 0.08);
+  padding-left: 18px;
+}
+
+.cp-search-badge {
+  align-self: flex-start;
+  background: rgba(0, 240, 255, 0.12);
+  color: var(--cp-cyan);
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.cp-search-item-title {
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.4;
+  color: #ffffff;
+}
+
+.cp-search-item-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 11px;
+  color: var(--cp-text-dim);
+}
+
+.cp-search-dropdown-all {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background: rgba(0, 240, 255, 0.05);
+  color: var(--cp-cyan);
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.15s ease;
+}
+
+.cp-search-dropdown-all:hover {
+  background: rgba(0, 240, 255, 0.12);
+  color: #ffffff;
+}
+
+.cp-search-no-results {
+  padding: 16px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--cp-text-dim);
+}
+
 /* Header Actions */
 .cp-header-actions {
   display: flex;

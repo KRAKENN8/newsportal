@@ -37,6 +37,26 @@ elseif ($path == 'insertcomment') {
 elseif ($path == 'deletecomment' && isset($_GET['id'])) {
     Controller::DeleteComment($_GET['id']);
 }
+elseif ($path == 'quicksearch') {
+    $q = isset($_GET['q']) ? trim($_GET['q']) : '';
+    $results = [];
+    if (mb_strlen($q) >= 2) {
+        $rawResults = News::searchNews($q);
+        $sliced = array_slice($rawResults, 0, 5);
+        foreach ($sliced as $item) {
+            $results[] = [
+                'id'             => (int)$item['id'],
+                'title'          => $item['title'],
+                'category_name'  => $item['category_name'] ?? 'Technology',
+                'reading_time'   => ViewNews::getReadingTime($item['text']),
+                'comments_count' => (int)($item['comments_count'] ?? 0)
+            ];
+        }
+    }
+    header('Content-Type: application/json; charset=utf-8');
+    echo json_encode(['results' => $results]);
+    exit;
+}
 elseif ($path == 'search') {
     $keyword = isset($_GET['otsi']) ? $_GET['otsi'] : (isset($_GET['q']) ? $_GET['q'] : '');
     $response = Controller::SearchNews($keyword);
