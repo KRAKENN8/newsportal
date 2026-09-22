@@ -34,6 +34,9 @@ elseif ($path == 'insertcomment') {
     header('Location: news?id=' . $id . '#cp-comments');
     exit;
 }
+elseif ($path == 'deletecomment' && isset($_GET['id'])) {
+    Controller::DeleteComment($_GET['id']);
+}
 elseif ($path == 'search') {
     $keyword = isset($_GET['otsi']) ? $_GET['otsi'] : (isset($_GET['q']) ? $_GET['q'] : '');
     $response = Controller::SearchNews($keyword);

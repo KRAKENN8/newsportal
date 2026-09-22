@@ -61,6 +61,9 @@ class ViewComments {
                 echo '    <div class="cp-comment-meta">';
                 echo '      <span class="cp-comment-author">' . $author . '</span>';
                 echo '      <span class="cp-comment-date"><i class="fa fa-clock-o"></i> ' . $dateFormatted . '</span>';
+                if (isset($_SESSION['user_id']) && ((int)$_SESSION['user_id'] === (int)$value['user_id'] || ($_SESSION['status'] ?? '') === 'admin')) {
+                    echo '  <a href="deletecomment?id=' . $value['id'] . '" class="cp-comment-del-btn" onclick="return confirm(\'Delete this comment?\');" title="Delete comment"><i class="fa fa-trash-o"></i> Delete</a>';
+                }
                 echo '    </div>';
                 echo '    <p class="cp-comment-text">' . nl2br($text) . '</p>';
                 echo '  </div>';

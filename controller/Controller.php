@@ -56,6 +56,42 @@ class Controller {
         exit;
     }
 
+    public static function DeleteComment($id) {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        if (!isset($_SESSION['user_id'])) {
+            header('Location: formLogin');
+            exit;
+        }
+
+        $id = (int)$id;
+        $comment = Comments::getCommentById($id);
+        if ($comment) {
+            $newsId = (int)$comment['news_id'];
+            $isAdmin = isset($_SESSION['status']) && $_SESSION['status'] === 'admin';
+            $isAuthor = (int)$_SESSION['user_id'] === (int)$comment['user_id'];
+
+            if ($isAdmin || $isAuthor) {
+                Comments::deleteComment($id, $_SESSION['user_id'], $isAdmin);
+                $_SESSION['flash'] = [
+                    'type' => 'info',
+                    'message' => 'Comment was successfully removed.'
+                ];
+            } else {
+                $_SESSION['flash'] = [
+                    'type' => 'error',
+                    'message' => 'You do not have permission to delete this comment.'
+                ];
+            }
+            header('Location: news?id=' . $newsId . '#cp-comments');
+            exit;
+        }
+
+        header('Location: ./all');
+        exit;
+    }
+
     public static function Comments($newsid) {
         $arr = Comments::getCommentByNewsID($newsid);
         ViewComments::CommentsByNews($arr);

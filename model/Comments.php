@@ -44,5 +44,22 @@ class Comments {
         $stmt->execute([':news_id' => $id]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+
+    public static function getCommentById($id) {
+        $db = new Database();
+        return $db->getOne("SELECT * FROM details WHERE id = :id", [':id' => (int)$id]);
+    }
+
+    public static function deleteComment($commentId, $userId, $isAdmin = false) {
+        $db = new Database();
+        if ($isAdmin) {
+            return $db->executeRun("DELETE FROM details WHERE id = :id", [':id' => (int)$commentId]);
+        } else {
+            return $db->executeRun("DELETE FROM details WHERE id = :id AND user_id = :user_id", [
+                ':id'      => (int)$commentId,
+                ':user_id' => (int)$userId
+            ]);
+        }
+    }
 }
 ?>

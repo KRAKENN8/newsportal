@@ -41,6 +41,13 @@ elseif ($path == 'newsDel' && isset($_GET['id'])) {
 elseif ($path == 'newsDelResult' && isset($_GET['id'])) {
     $response = controllerAdminNews::newsDeleteResult($_GET['id']);
 }
+//----------------- comments moderation
+elseif ($path == 'commentsAdmin') {
+    $response = controllerAdminComments::CommentsList();
+}
+elseif ($path == 'commentDel' && isset($_GET['id'])) {
+    $response = controllerAdminComments::commentDeleteResult($_GET['id']);
+}
 else {
     // Страница не существует
     $response = controllerAdmin::error404();

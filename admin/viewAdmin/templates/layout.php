@@ -40,6 +40,9 @@ if (isset($_SESSION["userId"]) && isset($_SESSION["sessionId"])) {
             <a href="newsAdd">
                 <i class="fa fa-plus-circle" style="color:var(--cp-cyan);"></i> Add Article
             </a>
+            <a href="commentsAdmin" class="<?php echo (basename($_SERVER['REQUEST_URI']) == 'commentsAdmin') ? 'active' : ''; ?>">
+                <i class="fa fa-comments"></i> Comments
+            </a>
             <a href="../" target="_blank" style="color:var(--cp-cyan);">
                 <i class="fa fa-external-link"></i> View Website
             </a>

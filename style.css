@@ -739,6 +739,27 @@ a:hover {
   font-family: var(--cp-font-mono);
 }
 
+.cp-comment-del-btn {
+  font-size: 11px;
+  color: var(--cp-text-dim);
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: rgba(239, 68, 68, 0.08);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  margin-left: 12px;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.cp-comment-del-btn:hover {
+  color: #fff;
+  background: rgba(239, 68, 68, 0.35);
+  border-color: #ef4444;
+}
+
 .cp-comment-text {
   color: var(--cp-text-muted);
   font-size: 14px;
