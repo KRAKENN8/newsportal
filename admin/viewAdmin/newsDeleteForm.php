@@ -48,7 +48,7 @@
             </div>
 
             <div style="display:flex; align-items:center; gap:12px; padding-top:15px; border-top:1px solid var(--cp-border);">
-                <button type="submit" class="cp-btn cp-btn-primary" style="background:#dc2626; border-color:#dc2626; color:#fff;" name="save">
+                <button type="submit" class="cp-btn cp-btn-danger" name="save" data-confirm="Are you sure you want to permanently delete article #<?php echo $id; ?> and all its associated data?" data-confirm-title="Purge Publication #<?php echo $id; ?>" data-confirm-subtitle="ADMIN PERMANENT PURGE" data-confirm-btn="Yes, Delete Publication" data-confirm-type="danger">
                     <i class="fa fa-trash"></i> Yes, Delete Publication
                 </button>
                 <a href="newsAdmin" class="cp-btn cp-btn-outline">

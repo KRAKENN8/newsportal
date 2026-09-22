@@ -114,3 +114,21 @@ This document outlines **3 major shortcomings** identified across the CyberPulse
 2. **Instant Live Search Autocomplete**:
    - Add `/api/search` JSON endpoint in `route/routing.php` returning matching articles with thumbnail data, title, category, and URL.
    - Integrate debounced client-side auto-complete dropdown into both the desktop and mobile search inputs in `view/layout.php`, allowing readers to preview and jump directly to matching stories as they type.
+
+---
+
+## Shortcoming 7: Disruptive Native Browser Confirmation Dialogs
+
+### Problem Description
+1. **Inconsistent & Outdated UX**: Destructive operations (such as deleting comments in public article discussions, moderating comments in the admin console, and article purging) relied on native browser `confirm()` popup alerts (`onclick="return confirm(...)";`).
+2. **Lack of Thematic Cohesion**: Native browser alerts break the immersion of the CyberPulse dark cyberpunk neon UI aesthetic, cannot be styled, block the browser thread, and provide poor accessibility and mobile ergonomics.
+
+### Improvement Plan
+1. **Universal Cyber Confirmation Modal (`view/modalConfirm.php`)**:
+   - Build an accessible, keyboard-friendly (ESC key dismiss, focus trapping, click-outside handling) custom modal dialog with sleek neon accents, glowing warning badges, scanline indicator, and animated transitions.
+   - Support custom action titles, subtitles, danger/warning/info theming, and customizable confirm/cancel buttons.
+2. **Declarative Data Attributes & Global Interception**:
+   - Enable automatic modal triggering for any element using `data-confirm`, `data-confirm-title`, `data-confirm-btn`, and `data-confirm-type`, supporting both direct `<a>` navigation and `<form>` submissions.
+3. **Seamless Integration Across Public & Admin Layouts**:
+   - Replace native `confirm()` in `view/comments.php`, `admin/viewAdmin/commentsList.php`, and `admin/viewAdmin/newsDeleteForm.php`.
+   - Include the modal component seamlessly in `view/layout.php` and `admin/viewAdmin/templates/layout.php`.

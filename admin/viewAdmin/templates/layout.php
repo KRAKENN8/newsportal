@@ -73,5 +73,8 @@ if (isset($_SESSION["userId"]) && isset($_SESSION["sessionId"])) {
         <p>&copy; <?php echo date('Y'); ?> CyberPulse Admin Engine &bull; System Architecture Active</p>
     </footer>
 </div>
+
+<!-- Custom Confirmation Modal Dialog -->
+<?php include dirname(__DIR__, 2) . '/view/modalConfirm.php'; ?>
 </body>
 </html>

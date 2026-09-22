@@ -390,5 +390,8 @@ $currentRoute = end($parts);
         });
     </script>
 
+    <!-- Confirmation Modal Dialog -->
+    <?php include __DIR__ . '/modalConfirm.php'; ?>
+
 </body>
 </html>
